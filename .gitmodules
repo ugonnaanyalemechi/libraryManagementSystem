@@ -1,0 +1,3 @@
+[submodule "debs/lipqxx"]
+	path = debs/lipqxx
+	url = https://github.com/jtv/libpqxx.git
