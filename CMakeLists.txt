@@ -3,11 +3,6 @@ project ("libraryManagementSystem")
 
 set(SOURCE_FILES
 	main.cpp
-<<<<<<< HEAD
-)
-
-add_executable (${PROJECT_NAME} ${SOURCE_FILES})
-=======
 	MenuManager.cpp
 	EntryManager.cpp
 	User.cpp
@@ -15,5 +10,10 @@ add_executable (${PROJECT_NAME} ${SOURCE_FILES})
 	BookManager.cpp
 )
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_executable (${PROJECT_NAME} ${SOURCE_FILES})
->>>>>>> 89a554f24eef1a0d3665a5e915ebe335df4d14b3
+
+add_subdirectory(libpqxx libpqxxbuild)
+target_link_libraries(${PROJECT_NAME} PRIVATE pqxx)

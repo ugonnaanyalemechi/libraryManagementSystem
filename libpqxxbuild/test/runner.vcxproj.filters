@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\runner.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test00.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test01.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test02.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test04.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test07.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test10.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test11.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test13.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test14.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test16.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test17.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test18.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test20.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test21.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test26.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test29.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test30.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test32.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test37.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test39.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test46.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test56.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test60.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test61.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test62.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test69.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test70.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test71.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test72.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test74.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test75.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test76.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test77.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test78.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test79.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test82.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test84.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test87.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test88.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test89.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\test90.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_array.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_binarystring.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_blob.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_cancel_query.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_column.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_composite.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_connection.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_cursor.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_encodings.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_error_verbosity.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_errorhandler.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_escape.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_exceptions.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_field.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_float.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_largeobject.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_nonblocking_connect.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_notification.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_pipeline.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_prepared_statement.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_range.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_read_transaction.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_result_iteration.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_result_slicing.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_row.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_separated_list.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_simultaneous_transactions.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_sql_cursor.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_stateless_cursor.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_strconv.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_stream_from.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_stream_query.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_stream_to.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_string_conversion.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_subtransaction.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_test_helpers.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_thread_safety_model.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_time.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_transaction.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_transaction_base.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_transaction_focus.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_transactor.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_type_name.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\unit\test_zview.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\UA\Documents\projects\libraryManagementSystem2\libpqxx\test\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{075BB087-5620-3658-A292-DD0853BED550}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
