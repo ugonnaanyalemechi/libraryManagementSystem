@@ -15,5 +15,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable (${PROJECT_NAME} ${SOURCE_FILES})
 
-add_subdirectory(libpqxx deps)
+add_subdirectory(deps/libpqxx build-pqxx)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE pqxx)
