@@ -1,5 +1,5 @@
 ﻿cmake_minimum_required (VERSION 3.8)
-project ("libraryManagementSystem")
+project (libraryManagementSystem)
 
 set(SOURCE_FILES
 	main.cpp
@@ -15,5 +15,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable (${PROJECT_NAME} ${SOURCE_FILES})
 
-add_subdirectory(libpqxx libpqxxbuild)
+add_subdirectory(libpqxx deps)
 target_link_libraries(${PROJECT_NAME} PRIVATE pqxx)

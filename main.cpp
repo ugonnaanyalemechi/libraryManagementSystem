@@ -7,6 +7,16 @@ using namespace std;
 
 int main() {
 	try {
+		fstream inputFile;
+		string password;
+
+		inputFile.open("../../../passwordDB.txt");
+
+		if (inputFile.fail())
+			cout << "Error has occurred in retrieving the file." << endl;
+
+		getline(inputFile, password);
+
 		// Connect to the database
 		pqxx::connection c("host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres user=postgres.pwdgipuzwbjtpswldglm password=y6czEdx7lda6U6rU");
 		if (c.is_open()) {

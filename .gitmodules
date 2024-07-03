@@ -1,3 +1,4 @@
-[submodule "libpqxx"]
-	path = libpqxx
-	url = https://github.com/jtv/libpqxx
+[submodule "debs/lipqxx"]
+	path = debs/lipqxx
+	url = https://github.com/jtv/libpqxx.git
+
