@@ -2,3 +2,8 @@
 .vscode/
 build/
 out/
+*.exe
+*.pdb
+*.obj
+*.ilk
+passwordDB.txt
