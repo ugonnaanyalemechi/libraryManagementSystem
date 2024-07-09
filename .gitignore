@@ -6,4 +6,4 @@ out/
 *.pdb
 *.obj
 *.ilk
-passwordDB.txt
+connInfo.txt
