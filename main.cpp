@@ -2,36 +2,42 @@
 #include <fstream>
 #include <string>
 #include <pqxx/pqxx>
+#include "MenuManager.h"
+#include "extern.h"
 
 using namespace std;
 
-int main() {
-	try {
-		fstream inputFile;
-		string password;
+string connInfo;
+MenuManager menuManager;
+pqxx::connection* conn;
 
-		inputFile.open("../../../../passwordDB.txt");
-
-		if (inputFile.fail())
-			cout << "Error has occurred in retrieving the file." << endl;
-
-		getline(inputFile, password);
-
-		// Connect to the database
-		pqxx::connection c("host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres user=postgres.pwdgipuzwbjtpswldglm password=" + password);
-		if (c.is_open()) {
-			cout << "Opened database successfully: " << c.dbname() << endl;
-		}
-		else {
-			cout << "Can't open database" << endl;
-			return 1;
-		}
-
+void retrieveConnInfo(fstream& inputFile) {
+	inputFile.open("../../../../connInfo.txt");
+	if (inputFile.fail())
+		cout << "Error has occurred in retrieving the file." << endl;
+	getline(inputFile, connInfo);
+}
+int setDatabaseConnection() {
+	conn = new pqxx::connection(connInfo);
+	if (conn->is_open()) {
+		cout << "Connected successfully to the database!" << endl;
+		return 0;
 	}
-	catch (const exception& e) {
-		cerr << e.what() << endl;
+	else {
+		cerr << "Cannot connect and access database...\n";
 		return 1;
 	}
+}
+
+int main() {
+	fstream inputFile;
+
+	retrieveConnInfo(inputFile);
+	setDatabaseConnection();
+
+	menuManager.showWelcomeMenu();
+	menuManager.getUserInput();
+	menuManager.processWelcomeMenuInput();
 
 	return 0;
 }

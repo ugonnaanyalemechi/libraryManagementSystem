@@ -6,4 +6,8 @@ out/
 *.pdb
 *.obj
 *.ilk
+<<<<<<< HEAD
+connInfo.txt
+=======
 passwordDB.txt
+>>>>>>> 4b213f8a424dd0b436def0d7ed4b83f9f8282516
