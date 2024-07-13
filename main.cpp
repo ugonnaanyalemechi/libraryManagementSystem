@@ -19,8 +19,10 @@ void retrieveConnInfo(fstream& inputFile) {
 }
 int setDatabaseConnection() {
 	conn = new pqxx::connection(connInfo);
-	if (conn->is_open())
+	if (conn->is_open()) {
+		cout << "Connected successfully to the database!" << endl;
 		return 0;
+	}
 	else {
 		cerr << "Cannot connect and access database...\n";
 		return 1;
@@ -34,6 +36,8 @@ int main() {
 	setDatabaseConnection();
 
 	menuManager.showWelcomeMenu();
+	menuManager.getUserInput();
+	menuManager.processWelcomeMenuInput();
 
 	return 0;
 }

@@ -10,4 +10,5 @@ private:
 public:
 	void getUserInput();
 	void showWelcomeMenu();
+	void processWelcomeMenuInput();
 };
