@@ -13,10 +13,13 @@ pqxx::connection* conn;
 
 void retrieveConnInfo(fstream& inputFile) {
 	inputFile.open("../../../../connInfo.txt");
-	if (inputFile.fail())
+	if (inputFile.fail()) {
 		cout << "Error has occurred in retrieving the file." << endl;
+		exit(EXIT_FAILURE);
+	}
 	getline(inputFile, connInfo);
 }
+
 int setDatabaseConnection() {
 	conn = new pqxx::connection(connInfo);
 	if (conn->is_open()) {
@@ -25,7 +28,7 @@ int setDatabaseConnection() {
 	}
 	else {
 		cerr << "Cannot connect and access database...\n";
-		return 1;
+		exit(EXIT_FAILURE);
 	}
 }
 
