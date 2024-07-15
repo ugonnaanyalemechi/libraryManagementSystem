@@ -2,12 +2,7 @@
 #include "extern.h"
 //Remove false positive warning for invalid index
 #pragma warning(disable:6385)
-
-
-void BookManager::printDatabaseName() {
-    string dbname = conn->dbname();
-    cout << "Connected to database: " << dbname << endl;
-}
+using namespace std;
 
 //Checks date format before sending to database
 bool checkDate(string dateInput) {
@@ -23,7 +18,7 @@ bool checkDate(string dateInput) {
 
     int month = (dateInput[5] - 48) * 10 + (dateInput[6] - 48);
 
-    if (1 > month > 12) {
+    if (month > 12 || month < 1) {
         return false;
     }
     int day = (dateInput[8] - 48) * 10 + (dateInput[9] - 48);
@@ -43,7 +38,14 @@ bool checkDate(string dateInput) {
     return true;
 }
 
-void BookManager::displayAddBookMenu() {
+//pushes data to database
+void BookManager::appendBookToDatabase(string title, string author, string publisher, string publicationDate) {
+    pqxx::work bookData(*conn);
+    bookData.exec_prepared("insertBookData", title, author, publisher, publicationDate);
+    bookData.commit();
+}
+
+void BookManager::displayAddBookUI() {
     string title;
     string author;
     string publisher;
@@ -64,5 +66,39 @@ void BookManager::displayAddBookMenu() {
         cout << "Invalid date format entered!" << endl;
         cout << "Enter the Publication Date (YYYY-MM-DD): ";
         getline(cin, publicationDate);
+    }
+
+    bookManager.appendBookToDatabase(title, author, publisher, publicationDate);
+}
+
+//attempt to allocate the prepared statement
+void allocatePreparedStatement() {
+    try {
+        conn->prepare("insertBookData", "INSERT INTO books (title, author, publisher, publication_date) VALUES ($1, $2, $3, $4)");
+    }
+    catch (const pqxx::sql_error& e) {
+        //error handling is neccessary because prepared statement might still exist within current session
+        if (string(e.what()).find("Failure during \'[PREPARE insertBookData]\': ERROR:  prepared statement \"insertBookData\" already exists"))
+            throw;
+    }
+}
+
+//manages the process for adding a book
+void BookManager::addBookProcess() {
+    allocatePreparedStatement();
+    displayAddBookUI();
+    char userInput = '0';
+    while (true) {
+;       cout << "Add another book? (Y/N): ";
+        cin >> userInput;
+        if (userInput != 'Y' && userInput != 'N') {
+            cout << "Invalid option selected...\n";
+        } else if (userInput == 'Y') {
+            system("cls");
+            displayAddBookUI();
+        }
+        else {
+            break;
+        }
     }
 }
