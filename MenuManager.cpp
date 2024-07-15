@@ -25,8 +25,7 @@ void MenuManager::processWelcomeMenuInput() {
 	system("cls");
 	switch (userInput) {
 		case 1:
-			bookManager.printDatabaseName();
-			bookManager.displayAddBookMenu();
+			bookManager.addBookProcess();
 			cout << "Feature unavailable. Please try again later." << endl;
 			break;
 		case 2:
@@ -41,5 +40,9 @@ void MenuManager::processWelcomeMenuInput() {
 		case 5:
 			cout << "Exiting..." << endl;
 			break;
+		default:
+			cout << "Invalid option selected...\n";
+			break;
+
 	}
 }
