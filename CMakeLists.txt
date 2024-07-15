@@ -8,7 +8,6 @@ set(SOURCE_FILES
 	User.cpp
 	Staff.cpp
 	BookManager.cpp
-	DatabaseConnection.cpp
 )
 
 set(CMAKE_CXX_STANDARD 20)
