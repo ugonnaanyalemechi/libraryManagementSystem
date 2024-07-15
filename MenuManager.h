@@ -2,8 +2,6 @@
 #include <iostream>
 #include "BookManager.h"
 
-using namespace std;
-
 class MenuManager
 {
 private:
