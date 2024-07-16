@@ -7,4 +7,5 @@ private:
     void displayAddBookUI();
 public:
     void addBookProcess();
+    void editBookProcess();
 };

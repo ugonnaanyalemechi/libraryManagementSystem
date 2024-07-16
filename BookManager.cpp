@@ -107,3 +107,7 @@ void BookManager::addBookProcess() {
         }
     }
 }
+
+void BookManager::editBookProcess() {
+
+}
