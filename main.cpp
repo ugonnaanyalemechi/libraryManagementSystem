@@ -9,6 +9,7 @@ using namespace std;
 
 string connInfo;
 MenuManager menuManager;
+BookManager bookManager;
 pqxx::connection* conn;
 
 void retrieveConnInfo(fstream& inputFile) {

@@ -1,9 +1,8 @@
 #pragma once
 #include <iostream>
+#include "BookManager.h"
 
-using namespace std;
-
-class MenuManager 
+class MenuManager
 {
 private:
 	int userInput;
