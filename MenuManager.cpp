@@ -25,7 +25,6 @@ void MenuManager::processWelcomeMenuInput() {
 	system("cls");
 	switch (userInput) {
 		case 1:
-			bookManager.addBookProcess();
 			cout << "Feature unavailable. Please try again later." << endl;
 			break;
 		case 2:
