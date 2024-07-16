@@ -3,7 +3,7 @@
 
 class BookManager {
 private:
-    void appendBookToDatabase(std::string, std::string, std::string, std::string);
+    void appendBookToDatabase(std::string, std::string, std::string, std::string, int);
     void displayAddBookUI();
 public:
     void addBookProcess();

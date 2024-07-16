@@ -4,7 +4,6 @@
 #pragma warning(disable:6385)
 using namespace std;
 
-//Checks date format before sending to database
 bool checkDate(string dateInput) {
     if (dateInput.length() != 10) {
         return false;
@@ -38,10 +37,9 @@ bool checkDate(string dateInput) {
     return true;
 }
 
-//pushes data to database
-void BookManager::appendBookToDatabase(string title, string author, string publisher, string publicationDate) {
+void BookManager::appendBookToDatabase(string title, string author, string publisher, string publicationDate, int availableCopies) {
     pqxx::work bookData(*conn);
-    bookData.exec_prepared("insertBookData", title, author, publisher, publicationDate);
+    bookData.exec_prepared("insertBookData", title, author, publisher, publicationDate, availableCopies);
     bookData.commit();
 }
 
@@ -50,6 +48,7 @@ void BookManager::displayAddBookUI() {
     string author;
     string publisher;
     string publicationDate;
+    int availableCopies;
 
     cout << "--------------- Add a new book:  ---------------" << endl;
     cout << "Enter a Title: ";
@@ -61,6 +60,14 @@ void BookManager::displayAddBookUI() {
     getline(cin, publisher);
     cout << "Enter the Publication Date (YYYY-MM-DD): ";
     getline(cin, publicationDate);
+    cout << "Enter available copies: ";
+    cin >> availableCopies;
+
+    while (availableCopies < 1) {
+        cout << "Invalid copy amount entered!" << endl;
+        cout << "Enter available copies: ";
+        cin >> availableCopies;
+    }
 
     while (!checkDate(publicationDate)) {
         cout << "Invalid date format entered!" << endl;
@@ -68,13 +75,12 @@ void BookManager::displayAddBookUI() {
         getline(cin, publicationDate);
     }
 
-    bookManager.appendBookToDatabase(title, author, publisher, publicationDate);
+    bookManager.appendBookToDatabase(title, author, publisher, publicationDate, availableCopies);
 }
 
-//attempt to allocate the prepared statement
 void allocatePreparedStatement() {
     try {
-        conn->prepare("insertBookData", "INSERT INTO books (title, author, publisher, publication_date) VALUES ($1, $2, $3, $4)");
+        conn->prepare("insertBookData", "INSERT INTO books (title, author, publisher, publication_date, available_copies) VALUES ($1, $2, $3, $4, $5)");
     }
     catch (const pqxx::sql_error& e) {
         //error handling is neccessary because prepared statement might still exist within current session
@@ -83,7 +89,6 @@ void allocatePreparedStatement() {
     }
 }
 
-//manages the process for adding a book
 void BookManager::addBookProcess() {
     allocatePreparedStatement();
     displayAddBookUI();
