@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include "MenuManager.h"
+#include "extern.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ void MenuManager::showWelcomeMenu() {
 }
 
 void MenuManager::processWelcomeMenuInput() {
+	system("cls");
 	switch (userInput) {
 		case 1:
 			cout << "Feature unavailable. Please try again later." << endl;
@@ -35,7 +37,11 @@ void MenuManager::processWelcomeMenuInput() {
 			cout << "Feature unavailable. Please try again later." << endl;
 			break;
 		case 5:
-			cout << "Feature unavailable. Please try again later." << endl;
+			cout << "Exiting..." << endl;
 			break;
+		default:
+			cout << "Invalid option selected...\n";
+			break;
+
 	}
 }

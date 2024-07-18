@@ -10,7 +10,7 @@ using namespace std;
 void EntryManager::registerLibraryMember() {
 	string firstName, lastName, email, hashedPassword;
 
-	cout << "--------------------------------------------------------------------------\n";
+	cout << "--------------------- REGISTRATION ---------------------\n";
 	cout << "We're so glad you want to join us! We just need a few details from you to create an account!\n\n";
 	
 	firstName = obtainPII("first name");
