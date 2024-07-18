@@ -24,28 +24,10 @@ void retrieveConnInfo(fstream& inputFile) {
 
 int setDatabaseConnection() {
 	conn = new pqxx::connection(connInfo);
-<<<<<<< Updated upstream
 	if (conn->is_open()) {
 		cout << "Connected successfully to the database!" << endl;
 		return 0;
-	}
-	else {
-=======
-
-	if (conn->is_open()) {
-		cout << "Successfully connected to: " << conn->dbname() << endl;
-
-		pqxx::work w(*conn);
-
-		/*pqxx::result row = w.exec(
-			"SELECT title FROM books WHERE book_id=6"
-		);
-
-		cout << row[0][0] << endl;*/
-
-		return 0;
 	} else {
->>>>>>> Stashed changes
 		cerr << "Cannot connect and access database...\n";
 		exit(EXIT_FAILURE);
 	}
@@ -57,15 +39,11 @@ int main() {
 	retrieveConnInfo(inputFile);
 	setDatabaseConnection();
 
-<<<<<<< Updated upstream
 	menuManager.showWelcomeMenu();
 	menuManager.getUserInput();
 	menuManager.processWelcomeMenuInput();
-=======
-	//menuManager.showWelcomeMenu();
 
 	entryManager.registerLibraryMember();
->>>>>>> Stashed changes
 
 	return 0;
 }
