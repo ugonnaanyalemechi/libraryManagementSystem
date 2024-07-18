@@ -29,19 +29,21 @@ string EntryManager::obtainPII(string infoType) {
 		cout << "What is your " << infoType << "?\n";
 		cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
 		cout << endl;
-		checkFirstLastName(userInput, infoType);
+		checkPII(userInput, infoType);
 	}
 	else {
 		cout << "What is your " << infoType << "?\n";
 		cout << "(If you do not have an email, enter the word 'none' below)\n";
 		cout << "Enter here: "; getline(cin, userInput);
 		cout << endl;
+		checkPII(userInput, infoType);
+		cout << "email address: " << userInput << endl;
 
 	}
 	return userInput;
 }
 
-void EntryManager::checkFirstLastName(string userInput, string infoType) {
+void EntryManager::checkPII(string &userInput, string infoType) {
 	if (userInput == "") {
 		cout << "Invald input!\n\n";
 		obtainPII(infoType);
@@ -55,6 +57,9 @@ void EntryManager::checkFirstLastName(string userInput, string infoType) {
 			obtainPII(infoType);
 		}
 	}
+
+	if (userInput == "none" && infoType == "email address")
+		userInput = "NULL";
 }
 
 string EntryManager::createPassword() {
