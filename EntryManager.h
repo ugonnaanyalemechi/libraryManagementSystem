@@ -1,13 +1,12 @@
 #pragma once
-#include <iostream>
-
-using namespace std;
+#include <string>
 
 class EntryManager
 {
 public:
 	void registerLibraryMember();
-	string obtainPII(string);
-	string createHashedPassword();
-	void addNewUserToDatabase(string, string, string, string);
+	std::string obtainPII(std::string);
+	void checkFirstLastName(std::string, std::string);
+	std::string createPassword();
+	void addNewUserToDatabase(std::string, std::string, std::string, std::string);
 };

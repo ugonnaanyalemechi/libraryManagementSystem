@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cctype>
 #include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
@@ -10,27 +11,53 @@ using namespace std;
 void EntryManager::registerLibraryMember() {
 	string firstName, lastName, email, hashedPassword;
 
-	cout << "--------------------- REGISTRATION ---------------------\n";
+	cout << "--------------------- Registration ---------------------\n";
 	cout << "We're so glad you want to join us! We just need a few details from you to create an account!\n\n";
 	
 	firstName = obtainPII("first name");
 	lastName = obtainPII("last name");
 	email = obtainPII("email address");
-	hashedPassword = createHashedPassword();
+	hashedPassword = createPassword();
 
 
 	addNewUserToDatabase("test", "test", "test", "test");
 }
 
-string EntryManager::obtainPII(string infoType) { // reminder that PII stands for personally indentifiable information
+string EntryManager::obtainPII(string infoType) {
 	string userInput;
-	cout << "What is your " << infoType << "?\n";
-	cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
-	cout << endl;
+	if (infoType == "first name" || infoType == "last name") {
+		cout << "What is your " << infoType << "?\n";
+		cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
+		cout << endl;
+		checkFirstLastName(userInput, infoType);
+	}
+	else {
+		cout << "What is your " << infoType << "?\n";
+		cout << "(If you do not have an email, enter the word 'none' below)\n";
+		cout << "Enter here: "; getline(cin, userInput);
+		cout << endl;
+
+	}
 	return userInput;
 }
 
-string EntryManager::createHashedPassword() {
+void EntryManager::checkFirstLastName(string userInput, string infoType) {
+	if (userInput == "") {
+		cout << "Invald input!\n\n";
+		obtainPII(infoType);
+	}
+	
+	for (char c : userInput) {
+		if (isalpha(c) || isspace(c))
+			continue;
+		else {
+			cout << "Invald input!\n\n";
+			obtainPII(infoType);
+		}
+	}
+}
+
+string EntryManager::createPassword() {
 	string inputtedPassword;
 	cout << "Please provide a suitable password...\n";
 	cout << "Enter your password here: "; getline(cin, inputtedPassword);
