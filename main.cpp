@@ -41,11 +41,9 @@ int main() {
 	retrieveConnInfo(inputFile);
 	setDatabaseConnection();
 
-	//menuManager.showWelcomeMenu();
-	//menuManager.getUserInput();
-	//menuManager.processWelcomeMenuInput();
-
-	entryManager.registerLibraryMember();
+	menuManager.showWelcomeMenu();
+	menuManager.getUserInput();
+	menuManager.processWelcomeMenuInput();
 
 	return 0;
 }

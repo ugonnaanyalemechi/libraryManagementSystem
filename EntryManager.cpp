@@ -40,13 +40,11 @@ void EntryManager::checkPII(string &userInput, string infoType) {
 	}
 	
 	if (infoType == "first name" || infoType == "last name") {
-		//userInput = toupper(userInput[0]); // ensures first and last names are capitalized
-		
-		for (int i = 0; i < userInput.length(); i++) { // used to prevent special chars and nums from being entered in names
-			if (userInput[0])
+		for (int i = 0; i < userInput.length(); i++) {
+			if (userInput[0]) // ensures first and last names are capitalized
 				userInput[0] = toupper(userInput[0]);
 			
-			if (isalpha(userInput[i]) || userInput[i])
+			if (isalpha(userInput[i]) || userInput[i]) // used to prevent special chars and nums from being entered in names
 				continue;
 			else {
 				cout << "Invald input! Please try again!\n\n";
@@ -89,6 +87,4 @@ void EntryManager::completeLibraryMemberRegistration() {
 	Sleep(1000);
 	system("cls");
 	menuManager.showWelcomeMenu();
-	menuManager.getUserInput();
-	menuManager.processWelcomeMenuInput();
 }
