@@ -10,4 +10,6 @@ public:
 	void getUserInput();
 	void showWelcomeMenu();
 	void processWelcomeMenuInput();
+	void showMemberMainMenu();
+	void processMemberMainMenu();
 };

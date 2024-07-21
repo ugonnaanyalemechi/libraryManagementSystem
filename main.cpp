@@ -40,8 +40,6 @@ int main() {
 	setDatabaseConnection();
 
 	menuManager.showWelcomeMenu();
-	menuManager.getUserInput();
-	menuManager.processWelcomeMenuInput();
 
 	return 0;
 }
