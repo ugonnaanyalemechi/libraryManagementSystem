@@ -88,3 +88,38 @@ void EntryManager::completeLibraryMemberRegistration() {
 	system("cls");
 	menuManager.showWelcomeMenu();
 }
+
+void EntryManager::signInUser() {
+	string email, password;
+
+	cout << "--------------------- Sign In ---------------------\n";
+	obtainLoginCredentials(email, password);
+	authenticateUser(email, password);
+}
+
+void EntryManager::obtainLoginCredentials(string& email, string& password) {
+	cout << "\nEmail: "; getline(cin, email);
+	cout << "\nPassword: "; getline(cin, password);
+	cout << endl;
+}
+
+void EntryManager::authenticateUser(string email, string password) {
+	string pass_hash = sha256(password);
+	
+	try {
+		conn->prepare(
+			"checkUserCredentialsExist",
+			"SELECT email, pass_hash FROM users WHERE email = '$1 AND pass_hash = '$2'"
+		);
+	}
+	catch (const pqxx::sql_error& e) {
+		// error handling is neccessary because prepared statement might still exist within current session
+		if (string(e.what()).find("Failure during \'[PREPARE checkUserCredentialsExist]\': ERROR:  prepared statement \"checkUserCredentialsExist\" already exists"))
+			throw;
+	}
+
+	pqxx::work userCredentials(*conn);
+	userCredentials.exec_prepared("checkUserCredentialsExist", email, password);
+
+	cout << "Exists??" << endl;
+}

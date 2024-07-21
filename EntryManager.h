@@ -9,6 +9,9 @@ private:
 	std::string createPassword();
 	void addNewLibraryMemberToDB(std::string, std::string, std::string, std::string);
 	void completeLibraryMemberRegistration();
+	void obtainLoginCredentials(std::string&, std::string&);
+	void authenticateUser(std::string, std::string);
 public:
 	void registerLibraryMember();
+	void signInUser();
 };
