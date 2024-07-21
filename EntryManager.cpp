@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <cctype>
+#include <cctype> // used for the isalpha() & isspace() functions
+#include <windows.h> // used for the Sleep() function
 #include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
@@ -9,7 +10,7 @@
 using namespace std;
 
 void EntryManager::registerLibraryMember() {
-	string firstName, lastName, email, hashedPassword;
+	string firstName, lastName, email, passHash;
 
 	cout << "--------------------- Registration ---------------------\n";
 	cout << "We're so glad you want to join us! We just need a few details from you to create an account!\n\n";
@@ -17,49 +18,38 @@ void EntryManager::registerLibraryMember() {
 	firstName = obtainPII("first name");
 	lastName = obtainPII("last name");
 	email = obtainPII("email address");
-	hashedPassword = createPassword();
-
-
-	addNewUserToDatabase("test", "test", "test", "test");
+	passHash = createPassword();
+	
+	addNewLibraryMemberToDB(firstName, lastName, email, passHash);
+	completeLibraryMemberRegistration();
 }
 
-string EntryManager::obtainPII(string infoType) {
-	string userInput;
-	if (infoType == "first name" || infoType == "last name") {
-		cout << "What is your " << infoType << "?\n";
-		cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
-		cout << endl;
-		checkPII(userInput, infoType);
-	}
-	else {
-		cout << "What is your " << infoType << "?\n";
-		cout << "(If you do not have an email, enter the word 'none' below)\n";
-		cout << "Enter here: "; getline(cin, userInput);
-		cout << endl;
-		checkPII(userInput, infoType);
-		cout << "email address: " << userInput << endl;
 
-	}
+string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
+	string userInput;
+	cout << "What is your " << infoType << "?\n";
+	cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
+	cout << endl;
+	checkPII(userInput, infoType);
 	return userInput;
 }
 
 void EntryManager::checkPII(string &userInput, string infoType) {
 	if (userInput == "") {
-		cout << "Invald input!\n\n";
+		cout << "Invald input! Please try again!\n\n";
 		obtainPII(infoType);
 	}
 	
-	for (char c : userInput) {
-		if (isalpha(c) || isspace(c))
-			continue;
-		else {
-			cout << "Invald input!\n\n";
-			obtainPII(infoType);
+	if (infoType == "first name" || infoType == "last name") { // used to prevent special chars and nums from being entered in names
+		for (char c : userInput) {
+			if (isalpha(c) || isspace(c))
+				continue;
+			else {
+				cout << "Invald input! Please try again!\n\n";
+				obtainPII(infoType);
+			}
 		}
 	}
-
-	if (userInput == "none" && infoType == "email address")
-		userInput = "NULL";
 }
 
 string EntryManager::createPassword() {
@@ -70,24 +60,31 @@ string EntryManager::createPassword() {
 	return sha256(inputtedPassword);
 }
 
-void EntryManager::addNewUserToDatabase(string firstName, string lastName, string email, string hashPassword) {
-	pqxx::work w(*conn);
+void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
+	try {
+		conn->prepare(
+			"addNewUser",
+			"INSERT INTO users (email, first_name, last_name, pass_hash) VALUES ($1, $2, $3, $4)"
+		);
+	}
+	catch (const pqxx::sql_error& e) {
+		// error handling is neccessary because prepared statement might still exist within current session
+		if (string(e.what()).find("Failure during \'[PREPARE addNewUser]\': ERROR:  prepared statement \"addNewUser\" already exists"))
+			throw;
+	}
 
-	pqxx::result row = w.exec(
-		"SELECT MAX(user_count) FROM users"
-	);
+	pqxx::work newUserData(*conn);
+	newUserData.exec_prepared("addNewUser", email, firstName, lastName, passHash);
+	newUserData.commit();
+	
+}
 
-	string thing = row[0][0].c_str();
-
-	cout << thing << endl;
-
-	/*
-	in order to make a uesr_id generator, 
-	*/
-
-
-	/*conn->prepare(
-		"add_new_user",
-		"INSER"
-		);*/
+void EntryManager::completeLibraryMemberRegistration() {
+	cout << "You have been successfully registered!\n";
+	cout << "Redirecting you back to the start...\n\n";
+	Sleep(1000);
+	system("cls");
+	menuManager.showWelcomeMenu();
+	menuManager.getUserInput();
+	menuManager.processWelcomeMenuInput();
 }

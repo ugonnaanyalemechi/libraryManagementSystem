@@ -8,5 +8,6 @@ public:
 	std::string obtainPII(std::string);
 	void checkPII(std::string&, std::string);
 	std::string createPassword();
-	void addNewUserToDatabase(std::string, std::string, std::string, std::string);
+	void addNewLibraryMemberToDB(std::string, std::string, std::string, std::string);
+	void completeLibraryMemberRegistration();
 };
