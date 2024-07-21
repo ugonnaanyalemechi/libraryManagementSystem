@@ -24,7 +24,6 @@ void EntryManager::registerLibraryMember() {
 	completeLibraryMemberRegistration();
 }
 
-
 string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
 	string userInput;
 	cout << "What is your " << infoType << "?\n";
