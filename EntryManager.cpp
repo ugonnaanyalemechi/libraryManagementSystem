@@ -12,7 +12,7 @@ using namespace std;
 void EntryManager::registerLibraryMember() {
 	string firstName, lastName, email, passHash;
 
-	cout << "--------------------- Registration ---------------------\n";
+	cout << "--------------------- Registration ---------------------\n\n";
 	cout << "We're so glad you want to join us! We just need a few details from you to create an account!\n\n";
 	
 	firstName = obtainPII("first name");
@@ -39,9 +39,14 @@ void EntryManager::checkPII(string &userInput, string infoType) {
 		obtainPII(infoType);
 	}
 	
-	if (infoType == "first name" || infoType == "last name") { // used to prevent special chars and nums from being entered in names
-		for (char c : userInput) {
-			if (isalpha(c) || isspace(c))
+	if (infoType == "first name" || infoType == "last name") {
+		//userInput = toupper(userInput[0]); // ensures first and last names are capitalized
+		
+		for (int i = 0; i < userInput.length(); i++) { // used to prevent special chars and nums from being entered in names
+			if (userInput[0])
+				userInput[0] = toupper(userInput[0]);
+			
+			if (isalpha(userInput[i]) || userInput[i])
 				continue;
 			else {
 				cout << "Invald input! Please try again!\n\n";
