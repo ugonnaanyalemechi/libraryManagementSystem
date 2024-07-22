@@ -58,8 +58,19 @@ string EntryManager::createPassword() {
 	string inputtedPassword;
 	cout << "Please provide a suitable password...\n";
 	cout << "Enter your password here: "; getline(cin, inputtedPassword);
-	cout << endl;
+	confirmNewPassword(inputtedPassword);
 	return sha256(inputtedPassword);
+}
+
+void EntryManager::confirmNewPassword(string inputtedPassword) {
+	string reenteredPassword;
+	cout << "Confirm password: "; getline(cin, reenteredPassword);
+	cout << endl;
+
+	if (inputtedPassword != reenteredPassword) {
+		cout << "Password inputs did not match! Please try again!\n\n";
+		createPassword();
+	}
 }
 
 void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
@@ -78,7 +89,6 @@ void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, st
 	pqxx::work newUserData(*conn);
 	newUserData.exec_prepared("addNewUser", email, firstName, lastName, passHash);
 	newUserData.commit();
-	
 }
 
 void EntryManager::completeLibraryMemberRegistration() {
