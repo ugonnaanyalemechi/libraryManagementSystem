@@ -37,7 +37,8 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 2:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			//cout << "Feature unavailable. Please try again later.\n\n";
+			showAdminMainMenu();
 			break;
 		case 3:
 			cout << "Feature unavailable. Please try again later.\n\n";
@@ -111,10 +112,10 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 2:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookManager.addBookProcess();
 		break;
 	case 3:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookManager.editBookProcess();
 		break;
 	case 4:
 		cout << "Feature unavailable. Please try again later.\n\n";
