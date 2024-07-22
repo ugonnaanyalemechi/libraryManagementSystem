@@ -21,14 +21,12 @@ void MenuManager::startMenu() {
 }
 
 void MenuManager::showWelcomeMenu() {
-	cout << "Welcome" << endl;
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "Welcome to the Library Management System!\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - Sign In\n";
 	cout << setw(5) << "" << "3 - Register\n";
-	cout << setw(5) << "" << "4 - Staff Sign In\n";
-	cout << setw(5) << "" << "5 - Exit\n\n";
+	cout << setw(5) << "" << "4 - Exit\n\n";
 	processWelcomeMenuInput(getUserInput());
 }
 
@@ -36,32 +34,27 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 	system("cls");
 	switch (userInput) {
 		case 1:
-			cout << "Feature unavailable. Please try again later." << endl;
+			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 2:
 			showMemberMainMenu();
 			break;
 		case 3:
-			cout << "Feature unavailable. Please try again later." << endl;
+			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 4:
-			showAdminMainMenu();
-			break;
-		case 5:
 			cout << "Exiting..." << endl;
 			quit = true;
 			break;
 		default:
-			cout << "Invalid option selected...\n";
+			cout << "Invalid option selected...\n\n";
 			break;
-
 	}
 }
 
 void MenuManager::showMemberMainMenu() {
+	cout << "--------------------- Main Menu ---------------------\n\n";
 	cout << "Welcome \"Username\"\n\n";
-	cout << "Main Menu" << endl;
-	cout << "--------------------------------------------------------------------------\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - View My Loans\n";
 	cout << setw(5) << "" << "3 - Edit My Account Info\n";
@@ -75,13 +68,13 @@ void MenuManager::processMemberMainMenu(int userInput) {
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 2:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 3:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 4:
 		break;
@@ -90,7 +83,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		quit = true;
 		break;
 	default:
-		cout << "Invalid option selected...\n";
+		cout << "Invalid option selected...\n\n";
 		break;
 	}
 }
@@ -113,16 +106,16 @@ void MenuManager::processAdminMainMenu(int userInput) {
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 2:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 3:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 4:
-		cout << "Feature unavailable. Please try again later." << endl;
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 5:
 		break;
@@ -131,7 +124,7 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		quit = true;
 		break;
 	default:
-		cout << "Invalid option selected...\n";
+		cout << "Invalid option selected...\n\n";
 		break;
 	}
 }
