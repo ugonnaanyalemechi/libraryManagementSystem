@@ -2,7 +2,7 @@
 #include <string>
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
-#include <conio.h>
+#include <conio.h> // used for the _getch() function
 #include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
@@ -58,16 +58,16 @@ string EntryManager::hideCharacterInput() {
 	char cString[1000];
 	int i = 0;
 	char ch;
-	while ((ch = _getch()) != '\r') { // Read characters until Enter (Enter key has ASCII value '\r')
-		if (ch == '\b') { // Handle backspace
+	while ((ch = _getch()) != '\r') { // read characters until Enter (Enter key has ASCII value '\r')
+		if (ch == '\b') { // handle backspace
 			if (i > 0) {
-				std::cout << "\b \b"; // Move cursor back, overwrite character, move cursor back again
+				cout << "\b \b"; // move cursor back, overwrite character, move cursor back again
 				i--;
 			}
 		}
 		else {
 			cString[i++] = ch;
-			std::cout << '*'; // Print asterisk for each character
+			cout << '*'; // print asterisk for each character
 		}
 	}
 	cString[i] = '\0';
@@ -79,7 +79,7 @@ string EntryManager::hideCharacterInput() {
 string EntryManager::createPassword() {
 	string inputtedPassword;
 
-	std::cout << "Enter password: ";
+	cout << "Enter password: ";
 	inputtedPassword = hideCharacterInput();
 
 	confirmNewPassword(inputtedPassword);
