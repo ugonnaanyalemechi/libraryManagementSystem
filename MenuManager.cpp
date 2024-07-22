@@ -93,11 +93,12 @@ void MenuManager::showAdminMainMenu() {
 	cout << "Administrator Menu" << endl;
 	cout << "--------------------------------------------------------------------------\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
-	cout << setw(5) << "" << "2 - Add/Edit Books\n";
-	cout << setw(5) << "" << "3 - Search and Manage Library Members\n";
-	cout << setw(5) << "" << "4 - Edit My Account Info\n";
-	cout << setw(5) << "" << "5 - Sign Out\n";
-	cout << setw(5) << "" << "6 - Exit\n\n";
+	cout << setw(5) << "" << "2 - Add Books\n";
+	cout << setw(5) << "" << "3 - Edit Books\n";
+	cout << setw(5) << "" << "4 - Search and Manage Library Members\n";
+	cout << setw(5) << "" << "5 - Edit My Account Info\n";
+	cout << setw(5) << "" << "6 - Sign Out\n";
+	cout << setw(5) << "" << "7 - Exit\n\n";
 	processAdminMainMenu(getUserInput());
 }
 
@@ -120,6 +121,8 @@ void MenuManager::processAdminMainMenu(int userInput) {
 	case 5:
 		break;
 	case 6:
+		break;
+	case 7:
 		cout << "Exiting...";
 		quit = true;
 		break;
