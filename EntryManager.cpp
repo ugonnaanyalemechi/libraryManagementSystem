@@ -2,6 +2,7 @@
 #include <string>
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
+#include <conio.h>
 #include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
@@ -26,8 +27,7 @@ void EntryManager::registerLibraryMember() {
 
 string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
 	string userInput;
-	cout << "What is your " << infoType << "?\n";
-	cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
+	cout << "Enter your " << infoType << ": "; getline(cin, userInput);
 	cout << endl;
 	checkPII(userInput, infoType);
 	return userInput;
@@ -54,17 +54,42 @@ void EntryManager::checkPII(string &userInput, string infoType) {
 	}
 }
 
+string EntryManager::hideCharacterInput() {
+	char cString[1000];
+	int i = 0;
+	char ch;
+	while ((ch = _getch()) != '\r') { // Read characters until Enter (Enter key has ASCII value '\r')
+		if (ch == '\b') { // Handle backspace
+			if (i > 0) {
+				std::cout << "\b \b"; // Move cursor back, overwrite character, move cursor back again
+				i--;
+			}
+		}
+		else {
+			cString[i++] = ch;
+			std::cout << '*'; // Print asterisk for each character
+		}
+	}
+	cString[i] = '\0';
+	cout << endl;
+	string enteredString = cString;
+	return enteredString;
+}
+
 string EntryManager::createPassword() {
 	string inputtedPassword;
-	cout << "Please provide a suitable password...\n";
-	cout << "Enter your password here: "; getline(cin, inputtedPassword);
+
+	std::cout << "Enter password: ";
+	inputtedPassword = hideCharacterInput();
+
 	confirmNewPassword(inputtedPassword);
 	return sha256(inputtedPassword);
 }
 
 void EntryManager::confirmNewPassword(string inputtedPassword) {
 	string reenteredPassword;
-	cout << "Confirm password: "; getline(cin, reenteredPassword);
+	cout << "Confirm password: ";
+	reenteredPassword = hideCharacterInput();
 	cout << endl;
 
 	if (inputtedPassword != reenteredPassword) {
@@ -95,4 +120,5 @@ void EntryManager::completeLibraryMemberRegistration() {
 	cout << "You have been successfully registered!\n";
 	cout << "Redirecting you back to the start...\n\n";
 	Sleep(1000);
+	system("cls");
 }

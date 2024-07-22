@@ -10,6 +10,7 @@ private:
 	void confirmNewPassword(std::string);
 	void addNewLibraryMemberToDB(std::string, std::string, std::string, std::string);
 	void completeLibraryMemberRegistration();
+	std::string hideCharacterInput();
 public:
 	void registerLibraryMember();
 };
