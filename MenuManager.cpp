@@ -37,7 +37,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 2:
-			showMemberMainMenu();
+			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 3:
 			cout << "Feature unavailable. Please try again later.\n\n";
@@ -77,6 +77,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 4:
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 5:
 		cout << "Exiting...";
@@ -119,8 +120,10 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 5:
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 6:
+		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 7:
 		cout << "Exiting...";
