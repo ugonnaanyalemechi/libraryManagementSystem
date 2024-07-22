@@ -95,6 +95,4 @@ void EntryManager::completeLibraryMemberRegistration() {
 	cout << "You have been successfully registered!\n";
 	cout << "Redirecting you back to the start...\n\n";
 	Sleep(1000);
-	system("cls");
-	menuManager.showWelcomeMenu();
 }
