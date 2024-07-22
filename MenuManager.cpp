@@ -6,15 +6,15 @@
 using namespace std;
 
 int MenuManager::getUserInput() {
-	cin.clear();
 	int input;
 	cout << "Please enter the numerical digit of the option you would like to select...\n";
 	cout << "Enter here: "; cin >> input;
 	cout << endl;
+	cin.clear(); cin.ignore(1);
 	return input;
 }
 
-void MenuManager::startMenu() {
+void MenuManager::beginMenuProcess() {
 	while (!quit) {
 		showWelcomeMenu();
 	}
@@ -40,7 +40,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 3:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			entryManager.registerLibraryMember();
 			break;
 		case 4:
 			cout << "Exiting..." << endl;
