@@ -2,6 +2,7 @@
 #include <string>
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
+#include <conio.h> // used for the _getch() function
 #include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
@@ -26,8 +27,7 @@ void EntryManager::registerLibraryMember() {
 
 string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
 	string userInput;
-	cout << "What is your " << infoType << "?\n";
-	cout << "Enter your " << infoType << " here: "; getline(cin, userInput);
+	cout << "Enter your " << infoType << ": "; getline(cin, userInput);
 	cout << endl;
 	checkPII(userInput, infoType);
 	return userInput;
@@ -54,12 +54,48 @@ void EntryManager::checkPII(string &userInput, string infoType) {
 	}
 }
 
+string EntryManager::hideCharacterInput() {
+	char cString[1000];
+	int i = 0;
+	char ch;
+	while ((ch = _getch()) != '\r') { // read characters until Enter (Enter key has ASCII value '\r')
+		if (ch == '\b') { // handle backspace
+			if (i > 0) {
+				cout << "\b \b"; // move cursor back, overwrite character, move cursor back again
+				i--;
+			}
+		}
+		else {
+			cString[i++] = ch;
+			cout << '*'; // print asterisk for each character
+		}
+	}
+	cString[i] = '\0';
+	cout << endl;
+	string enteredString = cString;
+	return enteredString;
+}
+
 string EntryManager::createPassword() {
 	string inputtedPassword;
-	cout << "Please provide a suitable password...\n";
-	cout << "Enter your password here: "; getline(cin, inputtedPassword);
-	cout << endl;
+
+	cout << "Enter password: ";
+	inputtedPassword = hideCharacterInput();
+
+	confirmNewPassword(inputtedPassword);
 	return sha256(inputtedPassword);
+}
+
+void EntryManager::confirmNewPassword(string inputtedPassword) {
+	string reenteredPassword;
+	cout << "Confirm password: ";
+	reenteredPassword = hideCharacterInput();
+	cout << endl;
+
+	if (inputtedPassword != reenteredPassword) {
+		cout << "Password inputs did not match! Please try again!\n\n";
+		createPassword();
+	}
 }
 
 void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
@@ -78,7 +114,6 @@ void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, st
 	pqxx::work newUserData(*conn);
 	newUserData.exec_prepared("addNewUser", email, firstName, lastName, passHash);
 	newUserData.commit();
-	
 }
 
 void EntryManager::completeLibraryMemberRegistration() {
@@ -86,40 +121,4 @@ void EntryManager::completeLibraryMemberRegistration() {
 	cout << "Redirecting you back to the start...\n\n";
 	Sleep(1000);
 	system("cls");
-	menuManager.showWelcomeMenu();
-}
-
-void EntryManager::signInUser() {
-	string email, password;
-
-	cout << "--------------------- Sign In ---------------------\n";
-	obtainLoginCredentials(email, password);
-	authenticateUser(email, password);
-}
-
-void EntryManager::obtainLoginCredentials(string& email, string& password) {
-	cout << "\nEmail: "; getline(cin, email);
-	cout << "\nPassword: "; getline(cin, password);
-	cout << endl;
-}
-
-void EntryManager::authenticateUser(string email, string password) {
-	string pass_hash = sha256(password);
-	
-	try {
-		conn->prepare(
-			"checkUserCredentialsExist",
-			"SELECT email, pass_hash FROM users WHERE email = '$1 AND pass_hash = '$2'"
-		);
-	}
-	catch (const pqxx::sql_error& e) {
-		// error handling is neccessary because prepared statement might still exist within current session
-		if (string(e.what()).find("Failure during \'[PREPARE checkUserCredentialsExist]\': ERROR:  prepared statement \"checkUserCredentialsExist\" already exists"))
-			throw;
-	}
-
-	pqxx::work userCredentials(*conn);
-	userCredentials.exec_prepared("checkUserCredentialsExist", email, password);
-
-	cout << "Exists??" << endl;
 }

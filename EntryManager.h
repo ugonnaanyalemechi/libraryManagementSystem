@@ -7,11 +7,10 @@ private:
 	std::string obtainPII(std::string);
 	void checkPII(std::string&, std::string);
 	std::string createPassword();
+	void confirmNewPassword(std::string);
 	void addNewLibraryMemberToDB(std::string, std::string, std::string, std::string);
 	void completeLibraryMemberRegistration();
-	void obtainLoginCredentials(std::string&, std::string&);
-	void authenticateUser(std::string, std::string);
+	std::string hideCharacterInput();
 public:
 	void registerLibraryMember();
-	void signInUser();
 };

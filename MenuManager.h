@@ -1,13 +1,17 @@
 #pragma once
 #include <iostream>
-#include "BookManager.h"
 
 class MenuManager
 {
 private:
-	int userInput;
-public:
-	void getUserInput();
+	bool quit = false;
+	int getUserInput();
 	void showWelcomeMenu();
-	void processWelcomeMenuInput();
+	void processWelcomeMenuInput(int);
+	void showMemberMainMenu();
+	void processMemberMainMenu(int);
+	void showAdminMainMenu();
+	void processAdminMainMenu(int);
+public:
+	void beginMenuProcess();
 };

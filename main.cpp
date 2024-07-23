@@ -26,7 +26,7 @@ void retrieveConnInfo(fstream& inputFile) {
 int setDatabaseConnection() {
 	conn = new pqxx::connection(connInfo);
 	if (conn->is_open()) {
-		cout << "Connected successfully to the database!" << endl;
+		cout << "Connected successfully to the database!\n" << endl;
 		return 0;
 	}
 	else {
