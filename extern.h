@@ -4,7 +4,7 @@
 #include "BookManager.h"
 
 
-extern std::string connectionInfo;
+extern std::string connInfo;
 extern MenuManager menuManager;
 extern BookManager bookManager;
 extern pqxx::connection* conn;
