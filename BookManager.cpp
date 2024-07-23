@@ -123,6 +123,7 @@ void BookManager::editBookProcess() {
             displayEditBookUI();
         }
         else {
+            system("cls");
             break;
         }
     }
@@ -139,10 +140,27 @@ void allocatePreparedRetrieveStatement() {
     }
 }
 
+void BookManager::allocatePreparedEditStatement() {
+    string editOptions[5] = { "title", "author", "publisher", "publication_date", "available_copies" };
+
+    for (int i = 0; i < 5; i++) {
+        try {
+            conn->prepare("edit_book_" + editOptions[i] + "", "UPDATE public.books SET " + editOptions[i] + " = $1 WHERE book_id = $2");
+        }
+        catch (const pqxx::sql_error& e) {
+            //error handling is neccessary because prepared statement might still exist within current session
+            if (string(e.what()).find("Failure during \'[PREPARE edit_book_" + editOptions[i] + "]\': ERROR:  prepared statement \"edit_book_" + editOptions[i] + "\" already exists"))
+                throw;
+        }
+    }
+}
+
 void BookManager::displayEditBookUI() {
     int bookID;
+    bool isBookIDValid = false;
     cout << "Enter a valid book ID#: ";
     cin >> bookID;
+    allocatePreparedEditStatement();
     allocatePreparedRetrieveStatement();
     string storedBookData[6];
 
@@ -154,16 +172,18 @@ void BookManager::displayEditBookUI() {
         
         int i = 0;
         if (bookResult.size() == 0) {
+            system("cls");
             cout << "Invalid book ID#...\n";
+            displayEditBookUI();
         }
         else {
+            isBookIDValid = true;
             for (auto row : bookResult) {
                 for (auto field : row) {
                     storedBookData[i] = field.c_str();
-                    cout << field.c_str() << '\t';
+                    //cout << field.c_str() << '\t';
                     i++;
                 }
-                cout << endl;
             }
         }
         cout << endl;
@@ -172,27 +192,26 @@ void BookManager::displayEditBookUI() {
         std::cerr << "SQL error: " << e.what() << '\n';
         std::cerr << "Rolling back transaction and aborting...\n";
     }
-    //allocatePreparedEditStatement();
+    if(isBookIDValid)
+    editBookMenuUI(storedBookData);
 
+}
+
+void BookManager::editBookMenuUI(string* storedBookData) {
+    cout << "Book Found: \n";
+    for (int i = 0; i < 6; i++) {
+        cout << storedBookData[i] << "\t";
+    }
+    cout << endl << endl;
     cout << "What would you like to modify?\n";
-    cout << "#1. Title\n#2. Author\n#3. Publisher\n#4. Publication Date\n#5 Available Copies\n\n";
+    cout << "#1. Title\n#2. Author\n#3. Publisher\n#4. Publication Date\n#5. Available Copies\n#6. Cancel Operation\n\n";
     cout << "Please enter the numerical digit of the option you would like to select...\n";
     cout << "Enter here: ";
     int selectedOption;
     cin >> selectedOption;
+    system("cls");
     manageEditMenuSelection(selectedOption, storedBookData);
 }
-
-//void BookManager::allocatePreparedEditStatement() {
-//    try {
-//        conn->prepare("edit_book", "UPDATE public.books SET $1 = $2 WHERE book_id = $3");
-//    }
-//    catch (const pqxx::sql_error& e) {
-//        //error handling is neccessary because prepared statement might still exist within current session
-//        if (string(e.what()).find("Failure during \'[PREPARE edit_book]\': ERROR:  prepared statement \"edit_book\" already exists"))
-//            throw;
-//    }
-//}
 
 int BookManager::convertStringToInt(string stringInt) {
     int tempInt = 0;
@@ -203,43 +222,132 @@ int BookManager::convertStringToInt(string stringInt) {
     return tempInt;
 }
 
+bool BookManager::displayChanges(string* storedBookData, string changedData, int selectedOption) {
+    cout << "\nBefore change:\n";
+    for (int i = 0; i < 6; i++) {
+        cout << storedBookData[i] << "\t";
+    }
+    cout << endl;
+    string previousData = storedBookData[selectedOption];
+    storedBookData[selectedOption] = changedData;
+    cout << "\nAfter change:\n";
+    for (int i = 0; i < 6; i++) {
+        cout << storedBookData[i] << "\t";
+    }
+    cout << endl;
+
+    while (true) {
+        char userInput;
+        cout << "\n\nConfirm change? (Y/N): ";
+        cin >> userInput;
+        if (userInput != 'Y' && userInput != 'N') {
+            cout << "Invalid option selected...\n";
+        }
+        else if (userInput == 'Y') {
+            return true;
+            break;
+        }
+        else {
+            storedBookData[selectedOption] = previousData;
+            system("cls");
+            return false;
+            break;
+        }
+    }
+}
+
 void BookManager::manageEditMenuSelection(int selectedOption, string* storedBookData) {
-    pqxx::work editBook(*conn);
     string userStringInput;
     string selectedColumn;
     int userIntInput;
     int selectedBookID = convertStringToInt(storedBookData[0]);
-    cout << "selected book id: " << selectedBookID << endl;
     switch (selectedOption)
     {
     case 1:
-        //string newTitle;
-        cout << "Enter a new title: "; 
+        cout << "Previous title: " << storedBookData[1] << endl;
+        cout << "Enter a new title: ";
+        cin.ignore();
         getline(cin, userStringInput);
         selectedColumn = "title";
-        processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+            processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        }
+        else {
+            editBookMenuUI(storedBookData);
+        }
+        
         break;
     case 2:
+        cout << "Previous author: " << storedBookData[2] << endl;
         cout << "Enter a new author: ";
+        cin.ignore();
         getline(cin, userStringInput);
         selectedColumn = "author";
-        processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+            processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        }
+        else {
+            editBookMenuUI(storedBookData);
+        }
+        
         break;
     case 3:
+        cout << "Previous publisher: " << storedBookData[3] << endl;
         cout << "Enter a new publisher: ";
+        cin.ignore();
         getline(cin, userStringInput);
         selectedColumn = "publisher";
-        processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+            processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        }
+        else {
+            editBookMenuUI(storedBookData);
+        }
+        
         break;
     case 4:
-        cout << "Enter a new publication date: ";
+        cout << "Previous publication date: " << storedBookData[4] << endl;
+        cout << "Enter a new publication date (YYYY-MM-DD): ";
+        cin.ignore();
         getline(cin, userStringInput);
+
+        while (!checkDate(userStringInput)) {
+            cout << "Invalid date format entered!" << endl;
+            cout << "Enter the Publication Date (YYYY-MM-DD): ";
+            getline(cin, userStringInput);
+        }
+
         selectedColumn = "publication_date";
-        processBookChanges(selectedColumn, selectedBookID, userStringInput);
+
+        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+            processBookChanges(selectedColumn, selectedBookID, userStringInput);
+        }
+        else {
+            editBookMenuUI(storedBookData);
+        }
+        
         break;
     case 5:
+        cout << "Previous copy count: " << storedBookData[5] << endl;
         cout << "Enter updated available copy count: ";
         cin >> userIntInput;
+
+        while (userIntInput < 1) {
+            cout << "Invalid copy amount entered!" << endl;
+            cout << "Enter available copies: ";
+            cin >> userIntInput;
+        }
+
+        selectedColumn = "available_copies";
+        if (displayChanges(storedBookData, std::to_string(userIntInput), selectedOption)) {
+            processBookChanges(selectedColumn, selectedBookID, userIntInput);
+        }
+        else {
+            editBookMenuUI(storedBookData);
+        }
+        break;
+    case 6:
+        cout << "Operation cancelled...\n";
         break;
     default:
         cout << "Invalid option selected...\n";
@@ -247,15 +355,34 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
     }
 }
 
-void BookManager::processBookChanges(string selectedColumn,int bookID ,string userInput) {
+void BookManager::processBookChanges(string selectedColumn, int bookID, string userInput) {
     try {
-
+            pqxx::work processBookChange(*conn);
+            processBookChange.exec_prepared("edit_book_" + selectedColumn + "", userInput, bookID);
+            processBookChange.commit();
+            cout << "Changes applied...\n";
     }
-    catch(const pqxx::sql_error& e) {
+    catch (const pqxx::sql_error& e) {
         cerr << "SQL error: " << e.what() << '\n';
+    }
+    catch (const pqxx::usage_error& e) {
+        cerr << "Usage error: " << e.what() << '\n';
+        throw;
     }
 }
 
-void BookManager::processBookChanges(string selectedColumn,int bookID , int userInput) {
-
+void BookManager::processBookChanges(string selectedColumn, int bookID, int userInput) {
+    try {
+        pqxx::work processBookChange(*conn);
+        processBookChange.exec_prepared("edit_book_" + selectedColumn + "", userInput, bookID);
+        processBookChange.commit();
+        cout << "Changes applied...\n";
+    }
+    catch (const pqxx::sql_error& e) {
+        cerr << "SQL error: " << e.what() << '\n';
+    }
+    catch (const pqxx::usage_error& e) {
+        cerr << "Usage error: " << e.what() << '\n';
+        throw;
+    }
 }

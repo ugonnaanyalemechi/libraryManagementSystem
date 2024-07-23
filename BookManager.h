@@ -7,10 +7,12 @@ private:
     void displayAddBookUI();
     void displayEditBookUI();
     void manageEditMenuSelection(int, std::string*);
-    void allocatePreparedEditStatement();
     void processBookChanges(std::string,int ,std::string);
     void processBookChanges(std::string, int, int);
     int convertStringToInt(std::string);
+    void allocatePreparedEditStatement();
+    void editBookMenuUI(std::string*);
+    bool displayChanges(std::string*, std::string, int);
 public:
     void addBookProcess();
     void editBookProcess();
