@@ -13,6 +13,8 @@ private:
     void allocatePreparedEditStatement();
     void editBookMenuUI(std::string*);
     bool displayChanges(std::string*, std::string, int);
+    void bookDeletionProcess(int, std::string*);
+    void allocatePreparedDeletionStatement();
 public:
     void addBookProcess();
     void editBookProcess();

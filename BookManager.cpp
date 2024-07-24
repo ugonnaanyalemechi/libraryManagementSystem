@@ -205,7 +205,7 @@ void BookManager::editBookMenuUI(string* storedBookData) {
     }
     cout << endl << endl;
     cout << "What would you like to modify?\n";
-    cout << "#1. Title\n#2. Author\n#3. Publisher\n#4. Publication Date\n#5. Available Copies\n#6. Cancel Operation\n\n";
+    cout << "#1. Title\n#2. Author\n#3. Publisher\n#4. Publication Date\n#5. Available Copies\n#6. Delete Book\n#7. Cancel Operation\n\n";
     cout << "Please enter the numerical digit of the option you would like to select...\n";
     cout << "Enter here: ";
     int selectedOption;
@@ -348,6 +348,10 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         }
         break;
     case 6:
+        allocatePreparedDeletionStatement();
+        bookDeletionProcess(selectedBookID, storedBookData);
+        break;
+    case 7:
         cout << "Operation cancelled...\n";
         break;
     default:
@@ -378,6 +382,59 @@ void BookManager::processBookChanges(string selectedColumn, int bookID, int user
         processBookChange.exec_prepared("edit_book_" + selectedColumn + "", userInput, bookID);
         processBookChange.commit();
         cout << "Changes applied...\n";
+    }
+    catch (const pqxx::sql_error& e) {
+        cerr << "SQL error: " << e.what() << '\n';
+    }
+    catch (const pqxx::usage_error& e) {
+        cerr << "Usage error: " << e.what() << '\n';
+        throw;
+    }
+}
+
+void BookManager::allocatePreparedDeletionStatement() {
+    try {
+        conn->prepare("delete_book", "DELETE FROM books WHERE book_id = $1");
+    }
+    catch (const pqxx::sql_error& e) {
+        //error handling is neccessary because prepared statement might still exist within current session
+        if (string(e.what()).find("Failure during \'[PREPARE delete_book]\': ERROR:  prepared statement \"delete_book\" already exists"))
+            throw;
+    }
+}
+
+void BookManager::bookDeletionProcess(int bookID, string* storedBookData) {
+
+    cout << "Book to be deleted:\n";
+    for (int i = 0; i < 6; i++) {
+        cout << storedBookData[i] << "\t";
+    }
+
+    cout << endl;
+
+    while (true) {
+        char userInput;
+        cout << "\n\nConfirm book deletion? (Y/N): ";
+        cin >> userInput;
+        if (userInput != 'Y' && userInput != 'N') {
+            cout << "Invalid option selected...\n";
+        }
+        else if (userInput == 'Y') {
+            system("cls");
+            break;
+        }
+        else {
+            system("cls");
+            return;
+            break;
+        }
+    }
+
+    try {
+        pqxx::work bookDelete(*conn);
+        bookDelete.exec_prepared("delete_book", bookID);
+        bookDelete.commit();
+        cout << "Book deleted successfully...\n";
     }
     catch (const pqxx::sql_error& e) {
         cerr << "SQL error: " << e.what() << '\n';
