@@ -37,8 +37,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 2:
-			//cout << "Feature unavailable. Please try again later.\n\n";
-			showAdminMainMenu();
+			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 3:
 			cout << "Feature unavailable. Please try again later.\n\n";
