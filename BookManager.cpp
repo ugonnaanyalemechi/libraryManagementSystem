@@ -192,6 +192,7 @@ void BookManager::displayEditBookUI() {
         std::cerr << "SQL error: " << e.what() << '\n';
         std::cerr << "Rolling back transaction and aborting...\n";
     }
+
     if(isBookIDValid)
     editBookMenuUI(storedBookData);
 
