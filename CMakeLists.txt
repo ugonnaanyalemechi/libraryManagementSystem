@@ -8,6 +8,7 @@ set(SOURCE_FILES
 	User.cpp
 	Staff.cpp
 	BookManager.cpp
+	BookSearch.cpp
 )
 
 set(CMAKE_CXX_STANDARD 20)
