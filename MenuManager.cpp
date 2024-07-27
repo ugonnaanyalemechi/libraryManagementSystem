@@ -37,7 +37,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 			cout << "Feature unavailable. Please try again later.\n\n";
 			break;
 		case 2:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			entryManager.signInUser();
 			break;
 		case 3:
 			entryManager.registerLibraryMember();
@@ -45,6 +45,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 		case 4:
 			cout << "Exiting..." << endl;
 			quit = true;
+			exit(0);
 			break;
 		default:
 			cout << "Invalid option selected...\n\n";

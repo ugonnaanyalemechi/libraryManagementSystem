@@ -4,6 +4,8 @@
 #include <pqxx/pqxx>
 #include "MenuManager.h"
 #include "EntryManager.h"
+#include "User.h"
+#include "Staff.h"
 #include "extern.h"
 
 using namespace std;
@@ -12,6 +14,8 @@ string connInfo;
 MenuManager menuManager;
 BookManager bookManager;
 EntryManager entryManager;
+User* user = nullptr;
+Staff* admin = nullptr;
 pqxx::connection* conn;
 
 void retrieveConnInfo(fstream& inputFile) {
@@ -41,11 +45,8 @@ int main() {
 	retrieveConnInfo(inputFile);
 	setDatabaseConnection();
 
-	/*menuManager.showWelcomeMenu();
-	menuManager.getUserInput();
-	menuManager.processWelcomeMenuInput();*/
+	menuManager.beginMenuProcess();
 
-	entryManager.signInUser();
 
 	return 0;
 }

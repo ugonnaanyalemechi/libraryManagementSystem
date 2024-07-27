@@ -4,3 +4,13 @@
 #include "extern.h"
 
 using namespace std;
+
+User::User() {}
+
+User::User(string email) {
+	this->email = email;
+}
+
+string User::getEmail() {
+	return email;
+}
