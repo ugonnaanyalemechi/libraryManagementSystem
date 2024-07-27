@@ -5,7 +5,7 @@
 #include "EntryManager.h"
 
 
-extern std::string connectionInfo;
+extern std::string connInfo;
 extern MenuManager menuManager;
 extern BookManager bookManager;
 extern EntryManager entryManager;
