@@ -124,14 +124,15 @@ void EntryManager::completeLibraryMemberRegistration() {
 }
 
 void EntryManager::signInUser() {
-	string email, password;
+	string email, password, firstName;
 
 	cout << "--------------------- Sign In ---------------------\n\n";
 
 	email = obtainCredentials("Email");
 	password = obtainCredentials("Password");
 
-	authenticateUser(email, password);
+	authenticateUser(email, password, firstName);
+	authorizeUser(email, firstName);
 }
 
 string EntryManager::obtainCredentials(string credentialType) {
@@ -141,21 +142,34 @@ string EntryManager::obtainCredentials(string credentialType) {
 	return userInput;
 }
 
-void EntryManager::authenticateUser(string email, string password) {
+void EntryManager::authenticateUser(string email, string password, string& firstName) {
 	string passHash = sha256(password);
-	bool userExists = searchUserInDB(email, passHash);
+	bool userExists = searchUserInDB(email, passHash, firstName);
 
 	if (!userExists)
 		handleInvalidCredentials();
-
-	return authorizeUser(email);
 }
 
-bool EntryManager::searchUserInDB(string email, string passHash) {
+bool EntryManager::searchUserInDB(string email, string passHash, string& firstName) {
+	setupSQLPrepStatementForFindingUser();
+	
+	pqxx::work findUserProcess(*conn);
+	pqxx::result userResult = findUserProcess.exec_prepared("find_user", email, passHash);
+	findUserProcess.commit();
+
+	if (userResult.size() == 0) // no user matching with inputted credentials found
+		return false;
+
+	for (auto row : userResult)
+		firstName = row["first_name"].c_str();
+	return true;
+}
+
+void EntryManager::setupSQLPrepStatementForFindingUser() {
 	try {
 		conn->prepare(
 			"find_user",
-			"SELECT email, pass_hash FROM users WHERE email = $1 AND pass_hash = $2"
+			"SELECT email, pass_hash, first_name FROM users WHERE email = $1 AND pass_hash = $2"
 		);
 	}
 	catch (const pqxx::sql_error& e) {
@@ -163,14 +177,6 @@ bool EntryManager::searchUserInDB(string email, string passHash) {
 		if (string(e.what()).find("Failure during \'[PREPARE find_user]\': ERROR:  prepared statement \"find_user\" already exists"))
 			throw;
 	}
-
-	pqxx::work findUserProcess(*conn);
-	pqxx::result userResult = findUserProcess.exec_prepared("find_user", email, passHash);
-	findUserProcess.commit();
-
-	if (userResult.size() == 0)
-		return false;
-	return true;
 }
 
 void EntryManager::handleInvalidCredentials() {
@@ -188,7 +194,7 @@ void EntryManager::handleInvalidCredentials() {
 			signInUser();
 			break;
 		case 2:
-			menuManager.beginMenuProcess();
+			menuManager.showWelcomeMenu();
 			break;
 		default:
 			cout << "Invalid option selected...\n\n";
@@ -197,16 +203,16 @@ void EntryManager::handleInvalidCredentials() {
 	}
 }
 
-void EntryManager::authorizeUser(string email) {
+void EntryManager::authorizeUser(string email, string firstName) {
 	bool userIsLibraryAdmin = checkUserIsLibraryAdmin(email);
 
 	if (userIsLibraryAdmin) {
-		admin = new Staff(email);
+		admin = new Staff(email, firstName);
 		system("cls");
 		menuManager.showAdminMainMenu();
 	}
 	else {
-		user = new User(email);
+		user = new User(email, firstName);
 		system("cls");
 		menuManager.showMemberMainMenu();
 	}

@@ -8,5 +8,5 @@ class Staff :
 	public User
 {
 public:
-	Staff(string);
+	Staff(string, string);
 };

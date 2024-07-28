@@ -5,6 +5,7 @@
 
 using namespace std;
 
-Staff::Staff(string email) {
+Staff::Staff(string email, string firstName) {
 	this->email = email;
+	this->firstName = firstName;
 }

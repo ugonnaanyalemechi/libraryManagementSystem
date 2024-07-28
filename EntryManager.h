@@ -1,23 +1,27 @@
 #pragma once
 #include <string>
+#include <pqxx/pqxx>
+
+using std::string;
 
 class EntryManager
 {
 private:
-	std::string obtainPII(std::string);
-	void checkPII(std::string&, std::string);
-	std::string createPassword();
-	void confirmNewPassword(std::string);
-	void addNewLibraryMemberToDB(std::string, std::string, std::string, std::string);
+	string obtainPII(string);
+	void checkPII(string&, string);
+	string createPassword();
+	void confirmNewPassword(string);
+	void addNewLibraryMemberToDB(string, string, string, string);
 	void completeLibraryMemberRegistration();
-	std::string hideCharacterInput();
+	string hideCharacterInput();
 
-	std::string obtainCredentials(std::string);
-	void authenticateUser(std::string, std::string);
-	bool searchUserInDB(std::string, std::string);
+	string obtainCredentials(string);
+	void authenticateUser(string, string, string&);
+	bool searchUserInDB(string, string, string&);
+	void setupSQLPrepStatementForFindingUser();
 	void handleInvalidCredentials();
-	void authorizeUser(std::string);
-	bool checkUserIsLibraryAdmin(std::string);
+	void authorizeUser(string, string);
+	bool checkUserIsLibraryAdmin(string);
 
 public:
 	void registerLibraryMember();

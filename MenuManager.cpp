@@ -45,7 +45,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 		case 4:
 			cout << "Exiting..." << endl;
 			quit = true;
-			exit(0);
+			exit(0); // may have to rework menu setup and add exit(0) to the rest to fix bug
 			break;
 		default:
 			cout << "Invalid option selected...\n\n";
@@ -55,7 +55,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 
 void MenuManager::showMemberMainMenu() {
 	cout << "--------------------- Main Menu ---------------------\n\n";
-	cout << "Welcome \"Username\"\n\n";
+	cout << "Welcome, " << user->getFirstName() << "\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - View My Loans\n";
 	cout << setw(5) << "" << "3 - Edit My Account Info\n";
@@ -91,9 +91,8 @@ void MenuManager::processMemberMainMenu(int userInput) {
 }
 
 void MenuManager::showAdminMainMenu() {
-	cout << "Welcome \"Username\"\n\n";
-	cout << "Administrator Menu" << endl;
-	cout << "--------------------------------------------------------------------------\n";
+	cout << "Welcome, " << admin->getFirstName() << "\n\n";
+	cout << "--------------------- Main Menu - Library Staff ---------------------\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - Add Books\n";
 	cout << setw(5) << "" << "3 - Edit Books\n";

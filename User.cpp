@@ -7,10 +7,15 @@ using namespace std;
 
 User::User() {}
 
-User::User(string email) {
+User::User(string email, string firstName) {
 	this->email = email;
+	this->firstName = firstName;
 }
 
 string User::getEmail() {
 	return email;
+}
+
+string User::getFirstName() {
+	return firstName;
 }

@@ -6,9 +6,10 @@ using std::string;
 class User
 {
 protected:
-	string email;
+	string email, firstName;
 public:
 	User();
-	User(string);
+	User(string, string);
 	string getEmail();
+	string getFirstName();
 };
