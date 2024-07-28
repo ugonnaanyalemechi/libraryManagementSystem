@@ -9,3 +9,9 @@ Staff::Staff(string email, string firstName) {
 	this->email = email;
 	this->firstName = firstName;
 }
+
+void Staff::staffSignOut() {
+	delete this;
+	admin = nullptr;
+	menuManager.showWelcomeMenu();
+}

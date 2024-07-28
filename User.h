@@ -10,6 +10,7 @@ protected:
 public:
 	User();
 	User(string, string);
+	void signOut();
 	string getEmail();
 	string getFirstName();
 };

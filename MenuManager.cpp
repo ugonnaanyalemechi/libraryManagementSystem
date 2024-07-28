@@ -27,6 +27,7 @@ void MenuManager::showWelcomeMenu() {
 	cout << setw(5) << "" << "2 - Sign In\n";
 	cout << setw(5) << "" << "3 - Register\n";
 	cout << setw(5) << "" << "4 - Exit\n\n";
+	cout << admin << endl;
 	processWelcomeMenuInput(getUserInput());
 }
 
@@ -78,7 +79,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 4:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		user->signOut();
 		break;
 	case 5:
 		cout << "Exiting...";
@@ -123,7 +124,7 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 6:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		admin->staffSignOut();
 		break;
 	case 7:
 		cout << "Exiting...";

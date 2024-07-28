@@ -12,6 +12,12 @@ User::User(string email, string firstName) {
 	this->firstName = firstName;
 }
 
+void User::signOut() {
+	delete this;
+	user = nullptr;
+	menuManager.showWelcomeMenu();
+}
+
 string User::getEmail() {
 	return email;
 }
