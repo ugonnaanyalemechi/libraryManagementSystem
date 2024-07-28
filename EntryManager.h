@@ -14,7 +14,6 @@ private:
 	void addNewLibraryMemberToDB(string, string, string, string);
 	void completeLibraryMemberRegistration();
 	string hideCharacterInput();
-
 	string obtainCredentials(string);
 	void authenticateUser(string, string, string&);
 	bool searchUserInDB(string, string, string&);
@@ -22,7 +21,6 @@ private:
 	void handleInvalidCredentials();
 	void authorizeUser(string, string);
 	bool checkUserIsLibraryAdmin(string);
-
 public:
 	void registerLibraryMember();
 	void signInUser();

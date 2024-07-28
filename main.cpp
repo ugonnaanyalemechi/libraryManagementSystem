@@ -14,9 +14,9 @@ string connInfo;
 MenuManager menuManager;
 BookManager bookManager;
 EntryManager entryManager;
+pqxx::connection* conn;
 User* user = nullptr;
 Staff* admin = nullptr;
-pqxx::connection* conn;
 
 void retrieveConnInfo(fstream& inputFile) {
 	inputFile.open("../../../../connInfo.txt");
