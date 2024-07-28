@@ -137,8 +137,15 @@ void EntryManager::signInUser() {
 
 string EntryManager::obtainCredentials(string credentialType) {
 	string userInput;
-	cout << credentialType << ": "; getline(cin, userInput);
-	cout << endl;
+
+	if (credentialType == "Email") {
+		cout << credentialType << ": "; getline(cin, userInput);
+		cout << endl;
+	}
+	else {
+		cout << credentialType << ": ";
+		userInput = hideCharacterInput();
+	}
 	return userInput;
 }
 
