@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include <pqxx/pqxx>
+//#include <string>
 
 using std::string;
 

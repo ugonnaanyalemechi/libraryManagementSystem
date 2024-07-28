@@ -27,7 +27,6 @@ void MenuManager::showWelcomeMenu() {
 	cout << setw(5) << "" << "2 - Sign In\n";
 	cout << setw(5) << "" << "3 - Register\n";
 	cout << setw(5) << "" << "4 - Exit\n\n";
-	cout << admin << endl;
 	processWelcomeMenuInput(getUserInput());
 }
 

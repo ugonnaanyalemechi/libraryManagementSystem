@@ -1,9 +1,7 @@
 #include <iostream>
-#include <string>
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
 #include <conio.h> // used for the _getch() function
-#include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
 #include "extern.h"
@@ -145,7 +143,9 @@ string EntryManager::obtainCredentials(string credentialType) {
 	else {
 		cout << credentialType << ": ";
 		userInput = hideCharacterInput();
+		cout << endl;
 	}
+
 	return userInput;
 }
 
