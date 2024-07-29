@@ -53,7 +53,6 @@ void BookManager::displayAddBookUI() {
 
     cout << "--------------- Add a new book:  ---------------" << endl;
     cout << "Enter a Title: ";
-    cin.ignore();
     getline(cin, title);
     cout << "Enter an Author: ";
     getline(cin, author);
@@ -104,6 +103,7 @@ void BookManager::addBookProcess() {
             displayAddBookUI();
         }
         else {
+            system("cls");
             break;
         }
     }

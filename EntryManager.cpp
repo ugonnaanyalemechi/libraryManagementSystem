@@ -1,9 +1,7 @@
 #include <iostream>
-#include <string>
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
 #include <conio.h> // used for the _getch() function
-#include <pqxx/pqxx>
 #include "EntryManager.h"
 #include "sha256.h"
 #include "extern.h"
@@ -121,4 +119,130 @@ void EntryManager::completeLibraryMemberRegistration() {
 	cout << "Redirecting you back to the start...\n\n";
 	Sleep(1000);
 	system("cls");
+}
+
+void EntryManager::signInUser() {
+	string email, password, firstName;
+
+	cout << "--------------------- Sign In ---------------------\n\n";
+
+	email = obtainCredentials("Email");
+	password = obtainCredentials("Password");
+
+	if(authenticateUser(email, password, firstName))
+		authorizeUser(email, firstName);
+}
+
+string EntryManager::obtainCredentials(string credentialType) {
+	string userInput;
+
+	if (credentialType == "Email") {
+		cout << credentialType << ": "; getline(cin, userInput);
+		cout << endl;
+	}
+	else {
+		cout << credentialType << ": ";
+		userInput = hideCharacterInput();
+		cout << endl;
+	}
+
+	return userInput;
+}
+
+bool EntryManager::authenticateUser(string email, string password, string& firstName) {
+	string passHash = sha256(password);
+	bool userExists = searchUserInDB(email, passHash, firstName);
+
+	if (!userExists)
+		handleInvalidCredentials();
+	return userExists;
+}
+
+bool EntryManager::searchUserInDB(string email, string passHash, string& firstName) {
+	setupSQLPrepStatementForFindingUser();
+	
+	pqxx::work findUserProcess(*conn);
+	pqxx::result userResult = findUserProcess.exec_prepared("find_user", email, passHash);
+	findUserProcess.commit();
+
+	if (userResult.size() == 0) // no user matching with inputted credentials found
+		return false;
+
+	for (auto row : userResult)
+		firstName = row["first_name"].c_str();
+	return true;
+}
+
+void EntryManager::setupSQLPrepStatementForFindingUser() {
+	try {
+		conn->prepare(
+			"find_user",
+			"SELECT email, pass_hash, first_name FROM users WHERE email = $1 AND pass_hash = $2"
+		);
+	}
+	catch (const pqxx::sql_error& e) {
+		// error handling is neccessary because prepared statement might still exist within current session
+		if (string(e.what()).find("Failure during \'[PREPARE find_user]\': ERROR:  prepared statement \"find_user\" already exists"))
+			throw;
+	}
+}
+
+void EntryManager::handleInvalidCredentials() {
+	cout << "---------------------------------------------------\n\n";
+	cout << "Invalid email and/or password!\n\n";
+	cout << "Would you like to try again or return back to the starting menu?\n\n";
+	cout << setw(5) << "" << "1 - Try Again\n";
+	cout << setw(5) << "" << "2 - Return to Starting Menu\n\n";
+	
+	int userInput = menuManager.getUserInput();
+	system("cls");
+
+	switch (userInput) {
+		case 1:
+			signInUser();
+			break;
+		case 2:
+			break;
+		default:
+			cout << "Invalid option selected...\n\n";
+			handleInvalidCredentials();
+			break;
+	}
+}
+
+void EntryManager::authorizeUser(string email, string firstName) {
+	bool userIsLibraryAdmin = checkUserIsLibraryAdmin(email);
+
+	if (userIsLibraryAdmin) {
+		admin = new Staff(email, firstName);
+		system("cls");
+		menuManager.showAdminMainMenu();
+	}
+	else {
+		user = new User(email, firstName);
+		system("cls");
+		menuManager.showMemberMainMenu();
+	}
+}
+
+bool EntryManager::checkUserIsLibraryAdmin(string email) {
+	try {
+		conn->prepare(
+			"check_user_is_admin",
+			"SELECT email, is_admin FROM users WHERE email = $1 AND is_admin = TRUE"
+		);
+	}
+	catch (const pqxx::sql_error& e) {
+		// error handling is neccessary because prepared statement might still exist within current session
+		if (string(e.what()).find("Failure during \'[PREPARE check_user_is_admin]\': ERROR:  prepared statement \"check_user_is_admin\" already exists"))
+			throw;
+	}
+
+	pqxx::work checkUserIsAdminProcess(*conn);
+	pqxx::result userTypeResult = checkUserIsAdminProcess.exec_prepared("check_user_is_admin", email);
+	checkUserIsAdminProcess.commit();
+
+	if (userTypeResult.size() == 0)
+		return false;
+	return true;
 }
