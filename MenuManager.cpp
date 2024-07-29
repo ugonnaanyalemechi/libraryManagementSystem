@@ -45,7 +45,6 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 		case 4:
 			cout << "Exiting..." << endl;
 			quit = true;
-			//exit(0); // may have to rework menu setup and add exit(0) to the rest to fix bug
 			break;
 		default:
 			cout << "Invalid option selected...\n\n";
