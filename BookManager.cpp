@@ -53,7 +53,6 @@ void BookManager::displayAddBookUI() {
 
     cout << "--------------- Add a new book:  ---------------" << endl;
     cout << "Enter a Title: ";
-    cin.ignore();
     getline(cin, title);
     cout << "Enter an Author: ";
     getline(cin, author);
