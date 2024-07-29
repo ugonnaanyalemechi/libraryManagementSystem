@@ -103,6 +103,7 @@ void BookManager::addBookProcess() {
             displayAddBookUI();
         }
         else {
+            system("cls");
             break;
         }
     }

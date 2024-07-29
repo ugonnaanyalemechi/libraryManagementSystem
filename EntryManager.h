@@ -14,7 +14,7 @@ private:
 	void completeLibraryMemberRegistration();
 	string hideCharacterInput();
 	string obtainCredentials(string);
-	void authenticateUser(string, string, string&);
+	bool authenticateUser(string, string, string&);
 	bool searchUserInDB(string, string, string&);
 	void setupSQLPrepStatementForFindingUser();
 	void handleInvalidCredentials();

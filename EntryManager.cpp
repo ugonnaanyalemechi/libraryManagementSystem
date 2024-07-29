@@ -129,8 +129,8 @@ void EntryManager::signInUser() {
 	email = obtainCredentials("Email");
 	password = obtainCredentials("Password");
 
-	authenticateUser(email, password, firstName);
-	authorizeUser(email, firstName);
+	if(authenticateUser(email, password, firstName))
+		authorizeUser(email, firstName);
 }
 
 string EntryManager::obtainCredentials(string credentialType) {
@@ -149,12 +149,13 @@ string EntryManager::obtainCredentials(string credentialType) {
 	return userInput;
 }
 
-void EntryManager::authenticateUser(string email, string password, string& firstName) {
+bool EntryManager::authenticateUser(string email, string password, string& firstName) {
 	string passHash = sha256(password);
 	bool userExists = searchUserInDB(email, passHash, firstName);
 
 	if (!userExists)
 		handleInvalidCredentials();
+	return userExists;
 }
 
 bool EntryManager::searchUserInDB(string email, string passHash, string& firstName) {
@@ -201,7 +202,6 @@ void EntryManager::handleInvalidCredentials() {
 			signInUser();
 			break;
 		case 2:
-			menuManager.showWelcomeMenu();
 			break;
 		default:
 			cout << "Invalid option selected...\n\n";
