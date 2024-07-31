@@ -34,7 +34,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 	system("cls");
 	switch (userInput) {
 		case 1:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			bookSearch.searchBookProcess();
 			break;
 		case 2:
 			cout << "Feature unavailable. Please try again later.\n\n";
@@ -68,7 +68,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookSearch.searchBookProcess();
 		break;
 	case 2:
 		cout << "Feature unavailable. Please try again later.\n\n";
@@ -108,7 +108,7 @@ void MenuManager::processAdminMainMenu(int userInput) {
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookSearch.searchBookProcess();
 		break;
 	case 2:
 		bookManager.addBookProcess();

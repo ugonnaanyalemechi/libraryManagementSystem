@@ -3,6 +3,7 @@
 #include <string>
 #include <pqxx/pqxx>
 #include "MenuManager.h"
+#include "BookSearch.h"
 #include "extern.h"
 
 using namespace std;
@@ -10,6 +11,7 @@ using namespace std;
 string connInfo;
 MenuManager menuManager;
 BookManager bookManager;
+BookSearch bookSearch;
 pqxx::connection* conn;
 
 void retrieveConnInfo(fstream& inputFile) {

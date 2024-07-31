@@ -1,4 +1,5 @@
 #include "BookSearch.h"
+#include "extern.h"
 
 using namespace std;
 
