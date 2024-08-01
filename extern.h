@@ -3,6 +3,7 @@
 #include "MenuManager.h"
 #include "BookManager.h"
 #include "BookSearch.h"
+#include "EntryManager.h"
 
 
 extern std::string connInfo;

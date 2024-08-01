@@ -8,6 +8,7 @@ set(SOURCE_FILES
 	User.cpp
 	Staff.cpp
 	BookManager.cpp
+	sha256.cpp
 	BookSearch.cpp
 	BookInfo.cpp
 )

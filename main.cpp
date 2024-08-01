@@ -39,7 +39,7 @@ int main() {
 	retrieveConnInfo(inputFile);
 	setDatabaseConnection();
 
-	menuManager.startMenu();
+	menuManager.beginMenuProcess();
 
 	return 0;
 }
