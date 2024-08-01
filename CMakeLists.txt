@@ -9,6 +9,7 @@ set(SOURCE_FILES
 	Staff.cpp
 	BookManager.cpp
 	BookSearch.cpp
+	BookInfo.cpp
 )
 
 set(CMAKE_CXX_STANDARD 20)
