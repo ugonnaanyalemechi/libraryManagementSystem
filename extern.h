@@ -6,7 +6,4 @@
 
 
 extern std::string connInfo;
-extern MenuManager menuManager;
-extern BookManager bookManager;
-extern BookSearch bookSearch;
 extern pqxx::connection* conn;
