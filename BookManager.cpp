@@ -76,7 +76,7 @@ void BookManager::displayAddBookUI() {
         getline(cin, publicationDate);
     }
 
-    bookManager.appendBookToDatabase(title, author, publisher, publicationDate, availableCopies);
+    appendBookToDatabase(title, author, publisher, publicationDate, availableCopies);
 }
 
 void allocatePreparedInsertStatement() {
@@ -97,6 +97,7 @@ void BookManager::addBookProcess() {
     while (true) {
 ;       cout << "Add another book? (Y/N): ";
         cin >> userInput;
+        userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
             cout << "Invalid option selected...\n";
         } else if (userInput == 'Y') {
@@ -115,6 +116,7 @@ void BookManager::editBookProcess() {
     while (true) {
         ;       cout << "Edit another book? (Y/N): ";
         cin >> userInput;
+        userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
             cout << "Invalid option selected...\n";
         }
@@ -156,53 +158,103 @@ void BookManager::allocatePreparedEditStatement() {
 }
 
 void BookManager::displayEditBookUI() {
+    BookInfo* bookDisplayData = new BookInfo();
     int bookID;
-    bool isBookIDValid = false;
+    isBookIDValid = false;
     cout << "Enter a valid book ID#: ";
     cin >> bookID;
     allocatePreparedEditStatement();
+    retrieveBookByID(bookID, bookDisplayData);
+
+    if(isBookIDValid)
+    editBookMenuUI(bookDisplayData);
+
+}
+
+BookInfo* BookManager::retrieveBookByID(int bookID) {
+    BookInfo* bookData = new BookInfo;
     allocatePreparedRetrieveStatement();
-    string storedBookData[6];
 
     //placing the pqxx::work statement into a try-catch block ensures a new transaction is created each time
     try {
-        pqxx::work bookData(*conn);
-        pqxx::result bookResult = bookData.exec_prepared("find_book", bookID);
-        bookData.commit();
-        
+        pqxx::work retrieveBookData(*conn);
+        pqxx::result bookResult = retrieveBookData.exec_prepared("find_book", bookID);
+        retrieveBookData.commit();
+
         int i = 0;
         if (bookResult.size() == 0) {
             system("cls");
             cout << "Invalid book ID#...\n";
+            delete &bookData;
             displayEditBookUI();
         }
         else {
             isBookIDValid = true;
             for (auto row : bookResult) {
-                for (auto field : row) {
-                    storedBookData[i] = field.c_str();
-                    //cout << field.c_str() << '\t';
-                    i++;
-                }
+                bookData->setBookID(row["book_id"].as<int>());
+                bookData->setBookTitle(row["title"].c_str());
+                bookData->setBookAuthor(row["author"].c_str());
+                bookData->setBookPublisher(row["publisher"].c_str());
+                bookData->setBookPublicationDate(row["publication_date"].c_str());
+                bookData->setAvailableCopies(row["available_copies"].as<int>());
             }
         }
-        cout << endl;
     }
     catch (const pqxx::sql_error& e) {
         std::cerr << "SQL error: " << e.what() << '\n';
         std::cerr << "Rolling back transaction and aborting...\n";
     }
-
-    if(isBookIDValid)
-    editBookMenuUI(storedBookData);
+    return bookData;
 
 }
 
-void BookManager::editBookMenuUI(string* storedBookData) {
-    cout << "Book Found: \n";
-    for (int i = 0; i < 6; i++) {
-        cout << storedBookData[i] << "\t";
+void BookManager::retrieveBookByID(int bookID, BookInfo*& bookData) {
+    allocatePreparedRetrieveStatement();
+
+    //placing the pqxx::work statement into a try-catch block ensures a new transaction is created each time
+    try {
+        pqxx::work retrieveBookData(*conn);
+        pqxx::result bookResult = retrieveBookData.exec_prepared("find_book", bookID);
+        retrieveBookData.commit();
+
+        int i = 0;
+        if (bookResult.size() == 0) {
+            system("cls");
+            cout << "Invalid book ID#...\n";
+            delete& bookData;
+            displayEditBookUI();
+        }
+        else {
+            isBookIDValid = true;
+            for (auto row : bookResult) {
+                bookData->setBookID(row["book_id"].as<int>());
+                bookData->setBookTitle(row["title"].c_str());
+                bookData->setBookAuthor(row["author"].c_str());
+                bookData->setBookPublisher(row["publisher"].c_str());
+                bookData->setBookPublicationDate(row["publication_date"].c_str());
+                bookData->setAvailableCopies(row["available_copies"].as<int>());
+            }
+        }
     }
+    catch (const pqxx::sql_error& e) {
+        std::cerr << "SQL error: " << e.what() << '\n';
+        std::cerr << "Rolling back transaction and aborting...\n";
+    }
+}
+
+void BookManager::displayBookData(BookInfo* bookData) {
+    cout << bookData->retrieveBookID() << "\t"
+        << bookData->retrieveBookTitle() << "\t"
+        << bookData->retrieveBookAuthor() << "\t"
+        << bookData->retrieveBookPublisher() << "\t"
+        << bookData->retrieveBookPublicationDate() << "\t"
+        << bookData->retrieveAvailableCopies();
+}
+void BookManager::editBookMenuUI(BookInfo*& storedBookData) {
+    cout << "Book Found: \n";
+
+    displayBookData(storedBookData);
+
     cout << endl << endl;
     cout << "What would you like to modify?\n";
     cout << "#1. Title\n#2. Author\n#3. Publisher\n#4. Publication Date\n#5. Available Copies\n#6. Delete Book\n#7. Cancel Operation\n\n";
@@ -223,54 +275,55 @@ int BookManager::convertStringToInt(string stringInt) {
     return tempInt;
 }
 
-bool BookManager::displayChanges(string* storedBookData, string changedData, int selectedOption) {
+bool BookManager::displayChanges(BookInfo*& storedBookData, BookInfo*& newBookData) {
     cout << "\nBefore change:\n";
-    for (int i = 0; i < 6; i++) {
-        cout << storedBookData[i] << "\t";
-    }
+    displayBookData(storedBookData);
     cout << endl;
-    string previousData = storedBookData[selectedOption];
-    storedBookData[selectedOption] = changedData;
+    
     cout << "\nAfter change:\n";
-    for (int i = 0; i < 6; i++) {
-        cout << storedBookData[i] << "\t";
-    }
+    displayBookData(newBookData);
     cout << endl;
 
     while (true) {
         char userInput;
         cout << "\n\nConfirm change? (Y/N): ";
         cin >> userInput;
+        userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
             cout << "Invalid option selected...\n";
         }
         else if (userInput == 'Y') {
+            delete storedBookData;
+            delete newBookData;
             return true;
             break;
         }
         else {
-            storedBookData[selectedOption] = previousData;
             system("cls");
+            delete newBookData;
             return false;
             break;
         }
     }
 }
 
-void BookManager::manageEditMenuSelection(int selectedOption, string* storedBookData) {
+void BookManager::manageEditMenuSelection(int selectedOption, BookInfo*& storedBookData) {
     string userStringInput;
     string selectedColumn;
     int userIntInput;
-    int selectedBookID = convertStringToInt(storedBookData[0]);
+    int selectedBookID = storedBookData->retrieveBookID();
+    BookInfo* newBookData = new BookInfo(storedBookData->retrieveBookID(), storedBookData->retrieveBookTitle(), storedBookData->retrieveBookAuthor(),
+        storedBookData->retrieveBookPublisher(), storedBookData->retrieveBookPublicationDate(), storedBookData->retrieveAvailableCopies());
     switch (selectedOption)
     {
     case 1:
-        cout << "Previous title: " << storedBookData[1] << endl;
+        cout << "Previous title: " << storedBookData->retrieveBookTitle() << endl;
         cout << "Enter a new title: ";
         cin.ignore();
         getline(cin, userStringInput);
+        newBookData->setBookTitle(userStringInput);
         selectedColumn = "title";
-        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+        if (displayChanges(storedBookData, newBookData)) {
             processBookChanges(selectedColumn, selectedBookID, userStringInput);
         }
         else {
@@ -279,12 +332,13 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         
         break;
     case 2:
-        cout << "Previous author: " << storedBookData[2] << endl;
+        cout << "Previous author: " << storedBookData->retrieveBookAuthor() << endl;
         cout << "Enter a new author: ";
         cin.ignore();
         getline(cin, userStringInput);
+        newBookData->setBookAuthor(userStringInput);
         selectedColumn = "author";
-        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+        if (displayChanges(storedBookData, newBookData)) {
             processBookChanges(selectedColumn, selectedBookID, userStringInput);
         }
         else {
@@ -293,12 +347,13 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         
         break;
     case 3:
-        cout << "Previous publisher: " << storedBookData[3] << endl;
+        cout << "Previous publisher: " << storedBookData->retrieveBookPublisher() << endl;
         cout << "Enter a new publisher: ";
         cin.ignore();
         getline(cin, userStringInput);
+        newBookData->setBookPublisher(userStringInput);
         selectedColumn = "publisher";
-        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+        if (displayChanges(storedBookData, newBookData)) {
             processBookChanges(selectedColumn, selectedBookID, userStringInput);
         }
         else {
@@ -307,7 +362,7 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         
         break;
     case 4:
-        cout << "Previous publication date: " << storedBookData[4] << endl;
+        cout << "Previous publication date: " << storedBookData->retrieveBookPublicationDate() << endl;
         cout << "Enter a new publication date (YYYY-MM-DD): ";
         cin.ignore();
         getline(cin, userStringInput);
@@ -317,10 +372,10 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
             cout << "Enter the Publication Date (YYYY-MM-DD): ";
             getline(cin, userStringInput);
         }
-
+        newBookData->setBookPublicationDate(userStringInput);
         selectedColumn = "publication_date";
 
-        if (displayChanges(storedBookData, userStringInput, selectedOption)) {
+        if (displayChanges(storedBookData, newBookData)) {
             processBookChanges(selectedColumn, selectedBookID, userStringInput);
         }
         else {
@@ -329,7 +384,7 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         
         break;
     case 5:
-        cout << "Previous copy count: " << storedBookData[5] << endl;
+        cout << "Previous copy count: " << storedBookData->retrieveAvailableCopies() << endl;
         cout << "Enter updated available copy count: ";
         cin >> userIntInput;
 
@@ -338,9 +393,9 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
             cout << "Enter available copies: ";
             cin >> userIntInput;
         }
-
+        newBookData->setAvailableCopies(userIntInput);
         selectedColumn = "available_copies";
-        if (displayChanges(storedBookData, std::to_string(userIntInput), selectedOption)) {
+        if (displayChanges(storedBookData, newBookData)) {
             processBookChanges(selectedColumn, selectedBookID, userIntInput);
         }
         else {
@@ -353,6 +408,7 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         break;
     case 7:
         cout << "Operation cancelled...\n";
+        delete newBookData;
         break;
     default:
         editBookMenuUI(storedBookData);
@@ -403,12 +459,10 @@ void BookManager::allocatePreparedDeletionStatement() {
     }
 }
 
-void BookManager::bookDeletionProcess(int bookID, string* storedBookData) {
+void BookManager::bookDeletionProcess(int bookID, BookInfo* storedBookData) {
 
     cout << "Book to be deleted:\n";
-    for (int i = 0; i < 6; i++) {
-        cout << storedBookData[i] << "\t";
-    }
+    displayBookData(storedBookData);
 
     cout << endl;
 
@@ -416,6 +470,7 @@ void BookManager::bookDeletionProcess(int bookID, string* storedBookData) {
         char userInput;
         cout << "\n\nConfirm book deletion? (Y/N): ";
         cin >> userInput;
+        userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
             cout << "Invalid option selected...\n";
         }
