@@ -355,7 +355,7 @@ void BookManager::manageEditMenuSelection(int selectedOption, string* storedBook
         cout << "Operation cancelled...\n";
         break;
     default:
-        cout << "Invalid option selected...\n";
+        editBookMenuUI(storedBookData);
         break;
     }
 }
