@@ -1,5 +1,4 @@
 #pragma once
-//#include <string>
 
 using std::string;
 
@@ -7,7 +6,7 @@ class EntryManager
 {
 private:
 	string obtainPII(string);
-	void checkPII(string&, string);
+	bool checkPII(string&, string);
 	string createPassword();
 	void confirmNewPassword(string);
 	void addNewLibraryMemberToDB(string, string, string, string);

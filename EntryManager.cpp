@@ -25,16 +25,23 @@ void EntryManager::registerLibraryMember() {
 
 string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
 	string userInput;
-	cout << "Enter your " << infoType << ": "; getline(cin, userInput);
-	cout << endl;
-	checkPII(userInput, infoType);
-	return userInput;
+	bool newUserPIIValid = false;
+
+	while (newUserPIIValid == false) {
+		cout << "Enter your " << infoType << ": "; getline(cin, userInput);
+		cout << endl;
+
+		newUserPIIValid = checkPII(userInput, infoType);
+
+		if (newUserPIIValid)
+			return userInput;
+	}
 }
 
-void EntryManager::checkPII(string &userInput, string infoType) {
+bool EntryManager::checkPII(string &userInput, string infoType) {
 	if (userInput == "") {
 		cout << "Invald input! Please try again!\n\n";
-		obtainPII(infoType);
+		return false;
 	}
 	
 	if (infoType == "first name" || infoType == "last name") {
@@ -43,10 +50,10 @@ void EntryManager::checkPII(string &userInput, string infoType) {
 				userInput[0] = toupper(userInput[0]);
 			
 			if (isalpha(userInput[i]) || userInput[i]) // used to prevent special chars and nums from being entered in names
-				continue;
+				return true;
 			else {
 				cout << "Invald input! Please try again!\n\n";
-				obtainPII(infoType);
+				return false;
 			}
 		}
 	}
