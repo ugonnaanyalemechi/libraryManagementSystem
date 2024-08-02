@@ -5,6 +5,7 @@
 
 using namespace std;
 BookSearch bookSearch;
+EntryManager entryManager;
 
 int MenuManager::getUserInput() {
 	int input;

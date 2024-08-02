@@ -20,6 +20,11 @@ void BookSearch::displaySearchBookUI() {
 void BookSearch::processSearchMenuInput(int menuInput) {
     switch (menuInput) {
     case 1:
+        BookInfo* bookDisplayData;
+        int bookID;
+        //bool isBookIDValid = false;
+        cout << "Enter a valid book ID#: ";
+        cin >> bookID;
         break;
     case 2:
         break;

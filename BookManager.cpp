@@ -131,7 +131,7 @@ void BookManager::editBookProcess() {
     }
 }
 
-void allocatePreparedRetrieveStatement() {
+void BookManager::allocatePreparedRetrieveStatement() {
     try {
         conn->prepare("find_book", "SELECT * FROM public.books WHERE book_id = $1");
     }
@@ -186,7 +186,7 @@ BookInfo* BookManager::retrieveBookByID(int bookID) {
             system("cls");
             cout << "Invalid book ID#...\n";
             delete &bookData;
-            displayEditBookUI();
+            return nullptr;
         }
         else {
             isBookIDValid = true;
@@ -221,7 +221,8 @@ void BookManager::retrieveBookByID(int bookID, BookInfo*& bookData) {
         if (bookResult.size() == 0) {
             system("cls");
             cout << "Invalid book ID#...\n";
-            delete& bookData;
+            isBookIDValid = false;
+            delete bookData;
             displayEditBookUI();
         }
         else {
@@ -250,7 +251,9 @@ void BookManager::displayBookData(BookInfo* bookData) {
         << bookData->retrieveBookPublicationDate() << "\t"
         << bookData->retrieveAvailableCopies();
 }
+
 void BookManager::editBookMenuUI(BookInfo*& storedBookData) {
+    isBookIDValid = false;
     cout << "Book Found: \n";
 
     displayBookData(storedBookData);
@@ -408,6 +411,7 @@ void BookManager::manageEditMenuSelection(int selectedOption, BookInfo*& storedB
         break;
     case 7:
         cout << "Operation cancelled...\n";
+        if(newBookData != nullptr)
         delete newBookData;
         break;
     default:

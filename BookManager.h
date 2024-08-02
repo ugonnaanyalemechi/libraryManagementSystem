@@ -12,6 +12,7 @@ private:
     int convertStringToInt(std::string);
     bool displayChanges(BookInfo*&, BookInfo*&);
     void allocatePreparedEditStatement();
+    void allocatePreparedRetrieveStatement();
     void displayBookData(BookInfo*);
     void editBookMenuUI(BookInfo*&);
     void manageEditMenuSelection(int, BookInfo*&);
