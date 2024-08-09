@@ -2,6 +2,7 @@
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
 #include <conio.h> // used for the _getch() function
+#include <algorithm>
 #include "EntryManager.h"
 #include "sha256.h"
 #include "extern.h"
@@ -39,7 +40,15 @@ string EntryManager::obtainPII(string infoType) { // PII = personally identifiab
 }
 
 bool EntryManager::checkPII(string &userInput, string infoType) {
-	if (userInput == "") {
+
+	int alphaCount = 0;
+
+	for (char c : userInput) {
+		if (isalpha(c))
+			alphaCount++;
+	}
+
+	if (alphaCount == 0) {
 		cout << "Invald input! Please try again!\n\n";
 		return false;
 	}
@@ -49,7 +58,7 @@ bool EntryManager::checkPII(string &userInput, string infoType) {
 			if (userInput[0]) // ensures first and last names are capitalized
 				userInput[0] = toupper(userInput[0]);
 			
-			if (isalpha(userInput[i]) || userInput[i]) // used to prevent special chars and nums from being entered in names
+			if (isalpha(userInput[i]) || isdigit(userInput[i])) // used to prevent special chars and nums from being entered in names
 				return true;
 			else {
 				cout << "Invald input! Please try again!\n\n";
