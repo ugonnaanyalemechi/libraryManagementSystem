@@ -10,6 +10,7 @@ using namespace std;
 
 void EntryManager::registerLibraryMember() {
 	string firstName, lastName, email, passHash;
+	bool libraryMemberAddedToDB = false;
 
 	cout << "--------------------- Registration ---------------------\n\n";
 	cout << "We're so glad you want to join us! We just need a few details from you to create an account!\n\n";
@@ -19,8 +20,10 @@ void EntryManager::registerLibraryMember() {
 	email = obtainPII("email address");
 	passHash = createPassword();
 	
-	addNewLibraryMemberToDB(firstName, lastName, email, passHash);
-	completeLibraryMemberRegistration();
+	libraryMemberAddedToDB = addNewLibraryMemberToDB(firstName, lastName, email, passHash);
+	
+	if (libraryMemberAddedToDB)
+		completeLibraryMemberRegistration();
 }
 
 string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
@@ -39,7 +42,15 @@ string EntryManager::obtainPII(string infoType) { // PII = personally identifiab
 }
 
 bool EntryManager::checkPII(string &userInput, string infoType) {
-	if (userInput == "") {
+
+	int alphaCount = 0;
+
+	for (char c : userInput) {
+		if (isalpha(c))
+			alphaCount++;
+	}
+
+	if (alphaCount == 0) { // prevents only-whitespace input from being entered
 		cout << "Invald input! Please try again!\n\n";
 		return false;
 	}
@@ -49,7 +60,7 @@ bool EntryManager::checkPII(string &userInput, string infoType) {
 			if (userInput[0]) // ensures first and last names are capitalized
 				userInput[0] = toupper(userInput[0]);
 			
-			if (isalpha(userInput[i]) || userInput[i]) // used to prevent special chars and nums from being entered in names
+			if (isalpha(userInput[i]) || isdigit(userInput[i])) // used to prevent special chars and nums from being entered in names
 				return true;
 			else {
 				cout << "Invald input! Please try again!\n\n";
@@ -103,7 +114,7 @@ void EntryManager::confirmNewPassword(string inputtedPassword) {
 	}
 }
 
-void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
+bool EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
 	try {
 		conn->prepare(
 			"addNewUser",
@@ -117,8 +128,20 @@ void EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, st
 	}
 
 	pqxx::work newUserData(*conn);
-	newUserData.exec_prepared("addNewUser", email, firstName, lastName, passHash);
+	try {
+		newUserData.exec_prepared("addNewUser", email, firstName, lastName, passHash);
+	}
+	catch (const pqxx::sql_error& e) {
+		if (string(e.what()).find("Failure during 'addNewUser': ERROR:  duplicate key value violates unique constraint 'users_email_key'")) {
+			cout << "User with same email address already exists!\n";
+			cout << "Please try using a different email address if you go through the registration process again, thank you!";
+			Sleep(7000);
+			system("cls");
+			return false;
+		}
+	}
 	newUserData.commit();
+	return true;
 }
 
 void EntryManager::completeLibraryMemberRegistration() {

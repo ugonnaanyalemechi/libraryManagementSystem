@@ -9,7 +9,7 @@ private:
 	bool checkPII(string&, string);
 	string createPassword();
 	void confirmNewPassword(string);
-	void addNewLibraryMemberToDB(string, string, string, string);
+	bool addNewLibraryMemberToDB(string, string, string, string);
 	void completeLibraryMemberRegistration();
 	string hideCharacterInput();
 	string obtainCredentials(string);
