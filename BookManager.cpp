@@ -53,7 +53,6 @@ void BookManager::displayAddBookUI() {
 
     cout << "--------------- Add a new book:  ---------------" << endl;
     cout << "Enter a Title: ";
-    cin.ignore();
     getline(cin, title);
     cout << "Enter an Author: ";
     getline(cin, author);
@@ -171,22 +170,18 @@ void BookManager::displayEditBookUI() {
 
 }
 
-BookInfo* BookManager::retrieveBookByID(int bookID) {
-    BookInfo* bookData = new BookInfo;
+bool BookManager::retrieveBookByID(BookInfo* bookData) {
     allocatePreparedRetrieveStatement();
-
     //placing the pqxx::work statement into a try-catch block ensures a new transaction is created each time
     try {
         pqxx::work retrieveBookData(*conn);
-        pqxx::result bookResult = retrieveBookData.exec_prepared("find_book", bookID);
+        pqxx::result bookResult = retrieveBookData.exec_prepared("find_book", bookData->retrieveBookID());
         retrieveBookData.commit();
 
         int i = 0;
         if (bookResult.size() == 0) {
-            system("cls");
             cout << "Invalid book ID#...\n";
-            delete &bookData;
-            return nullptr;
+            return false;
         }
         else {
             isBookIDValid = true;
@@ -204,7 +199,7 @@ BookInfo* BookManager::retrieveBookByID(int bookID) {
         std::cerr << "SQL error: " << e.what() << '\n';
         std::cerr << "Rolling back transaction and aborting...\n";
     }
-    return bookData;
+    return true;
 
 }
 

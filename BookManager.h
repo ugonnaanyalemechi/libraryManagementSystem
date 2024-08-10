@@ -13,15 +13,15 @@ private:
     bool displayChanges(BookInfo*&, BookInfo*&);
     void allocatePreparedEditStatement();
     void allocatePreparedRetrieveStatement();
-    void displayBookData(BookInfo*);
     void editBookMenuUI(BookInfo*&);
     void manageEditMenuSelection(int, BookInfo*&);
     void bookDeletionProcess(int, BookInfo*);
     void allocatePreparedDeletionStatement();
-    bool isBookIDValid;
-    BookInfo* retrieveBookByID(int);
+    bool isBookIDValid; 
     void retrieveBookByID(int, BookInfo*&);
 public:
     void addBookProcess();
     void editBookProcess();
+    bool retrieveBookByID(BookInfo* bookData);
+    void displayBookData(BookInfo*);
 };
