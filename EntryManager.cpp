@@ -23,8 +23,13 @@ void EntryManager::registerLibraryMember() {
 	
 	libraryMemberAddedToDB = addNewLibraryMemberToDB(firstName, lastName, email, passHash);
 	
-	if (libraryMemberAddedToDB)
+	if (libraryMemberAddedToDB) {
 		completeLibraryMemberRegistration();
+	}
+	else {
+		registerLibraryMember();
+	}
+		
 }
 
 string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
@@ -135,7 +140,7 @@ bool EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, st
 	catch (const pqxx::sql_error& e) {
 		if (string(e.what()).find("Failure during 'addNewUser': ERROR:  duplicate key value violates unique constraint 'users_email_key'")) {
 			cout << "User with same email address already exists!\n";
-			cout << "Please try using a different email address if you go through the registration process again, thank you!";
+			cout << "Redirecting to new registration...";
 			Sleep(7000);
 			system("cls");
 			return false;
