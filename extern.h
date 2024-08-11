@@ -2,14 +2,12 @@
 #include "pqxx/pqxx"
 #include "MenuManager.h"
 #include "BookManager.h"
+#include "BookSearch.h"
 #include "EntryManager.h"
 #include "User.h"
 #include "Staff.h"
 
 extern std::string connInfo;
-extern MenuManager menuManager;
-extern BookManager bookManager;
-extern EntryManager entryManager;
+extern pqxx::connection* conn;
 extern User* user;
 extern Staff* admin;
-extern pqxx::connection* conn;

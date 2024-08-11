@@ -8,6 +8,7 @@
 #include "extern.h"
 
 using namespace std;
+MenuManager menuManager1;
 
 void EntryManager::registerLibraryMember() {
 	string firstName, lastName, email, passHash;
@@ -230,7 +231,7 @@ void EntryManager::handleInvalidCredentials() {
 	cout << setw(5) << "" << "1 - Try Again\n";
 	cout << setw(5) << "" << "2 - Return to Starting Menu\n\n";
 	
-	int userInput = menuManager.getUserInput();
+	int userInput = menuManager1.getUserInput();
 	system("cls");
 
 	switch (userInput) {
@@ -252,12 +253,12 @@ void EntryManager::authorizeUser(string email, string firstName) {
 	if (userIsLibraryAdmin) {
 		admin = new Staff(email, firstName);
 		system("cls");
-		menuManager.showAdminMainMenu();
+		menuManager1.showAdminMainMenu();
 	}
 	else {
 		user = new User(email, firstName);
 		system("cls");
-		menuManager.showMemberMainMenu();
+		menuManager1.showMemberMainMenu();
 	}
 }
 

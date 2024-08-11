@@ -4,6 +4,8 @@
 #include "extern.h"
 
 using namespace std;
+BookSearch bookSearch;
+EntryManager entryManager;
 
 int MenuManager::getUserInput() {
 	int input;
@@ -34,7 +36,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 	system("cls");
 	switch (userInput) {
 		case 1:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			bookSearch.searchBookProcess();
 			break;
 		case 2:
 			entryManager.signInUser();
@@ -68,7 +70,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookSearch.searchBookProcess();
 		break;
 	case 2:
 		cout << "Feature unavailable. Please try again later.\n\n";
@@ -103,19 +105,18 @@ void MenuManager::showAdminMainMenu() {
 }
 
 void MenuManager::processAdminMainMenu(int userInput) {
+	BookManager* bookManager = new BookManager();
 	system("cls");
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookSearch.searchBookProcess();
 		break;
 	case 2:
-		bookManager.addBookProcess();
-		menuManager.showAdminMainMenu();
+		bookManager->addBookProcess();
 		break;
 	case 3:
-		bookManager.editBookProcess();
-		menuManager.showAdminMainMenu();
+		bookManager->editBookProcess();
 		break;
 	case 4:
 		cout << "Feature unavailable. Please try again later.\n\n";

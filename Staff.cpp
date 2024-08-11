@@ -4,6 +4,7 @@
 #include "extern.h"
 
 using namespace std;
+MenuManager menuManager3;
 
 Staff::Staff(string email, string firstName) {
 	this->email = email;
@@ -13,5 +14,5 @@ Staff::Staff(string email, string firstName) {
 void Staff::staffSignOut() {
 	delete this;
 	admin = nullptr;
-	menuManager.showWelcomeMenu();
+	menuManager3.showWelcomeMenu();
 }

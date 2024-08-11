@@ -4,6 +4,7 @@
 #include "extern.h"
 
 using namespace std;
+MenuManager menuManager2;
 
 User::User() {}
 
@@ -15,7 +16,7 @@ User::User(string email, string firstName) {
 void User::signOut() {
 	delete this;
 	user = nullptr;
-	menuManager.showWelcomeMenu();
+	menuManager2.showWelcomeMenu();
 }
 
 string User::getEmail() {
