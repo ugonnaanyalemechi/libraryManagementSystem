@@ -1,5 +1,6 @@
 #include "BookSearch.h"
 #include "extern.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -81,10 +82,16 @@ void BookSearch::processSearchMenuInput(int menuInput) {
     delete bookDisplayData;
 }
 
+std::string BookSearch::formatSearchText(const std::string& userSearchInput) {
+    string formattedText = userSearchInput;
+    replace(formattedText.begin(), formattedText.end(), ' ', '&');
+    return formattedText;
+}
+
 void BookSearch::prepareRichBookTitleSearch() {
 
     try {
-        conn->prepare("bookTitleSearch", "SELECT book_id, title, author, publisher, publication_date, available_copies FROM public.books WHERE title_tsvector @@ phraseto_tsquery('english', $1) LIMIT $2 OFFSET $3");
+        conn->prepare("bookTitleSearch", "SELECT book_id, title, author, publisher, publication_date, available_copies FROM public.books WHERE title_tsvector @@ to_tsquery('english', $1) LIMIT $2 OFFSET $3");
     }//WHERE ts @@ phraseto_tsquery('english', $1) 
     catch (const pqxx::sql_error& e) {
         //error handling is neccessary because prepared statement might still exist within current session
@@ -97,12 +104,12 @@ void BookSearch::processRichBookTitleSearch(std::string userSearchTerm, int resu
     resultsRecieved = 0;
     BookInfo* bookData = new BookInfo();
     // Define the search term, limit, and offset
-    std::string search_term = "your_search_term";
     int limit = 25;
     // Change resultOffset value to paginate through results
+    string formattedUserSearchTerm = formatSearchText(userSearchTerm);
     try {
         pqxx::work processTitleSearch(*conn);
-        pqxx::result searchResult = processTitleSearch.exec_prepared("bookTitleSearch", userSearchTerm, limit, resultOffset);
+        pqxx::result searchResult = processTitleSearch.exec_prepared("bookTitleSearch", formattedUserSearchTerm, limit, resultOffset);
         for (auto row : searchResult) {
             bookData->setBookID(row["book_id"].as<int>());
             bookData->setBookTitle(row["title"].c_str());
