@@ -51,11 +51,7 @@ bool EntryManager::checkPII(string &userInput, string infoType) {
 			alphaCount++;
 	}
 
-<<<<<<< HEAD
 	if (alphaCount == 0) { // prevents only-whitespace input from being entered
-=======
-	if (alphaCount == 0) {
->>>>>>> 99e008b96d3cb3bbf1ae99a808535d3cde3f9a9c
 		cout << "Invald input! Please try again!\n\n";
 		return false;
 	}
