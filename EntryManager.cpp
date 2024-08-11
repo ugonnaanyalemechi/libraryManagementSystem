@@ -2,6 +2,7 @@
 #include <cctype> // used for the isalpha() & isspace() functions
 #include <windows.h> // used for the Sleep() function
 #include <conio.h> // used for the _getch() function
+#include <algorithm>
 #include "EntryManager.h"
 #include "sha256.h"
 #include "extern.h"
@@ -50,7 +51,11 @@ bool EntryManager::checkPII(string &userInput, string infoType) {
 			alphaCount++;
 	}
 
+<<<<<<< HEAD
 	if (alphaCount == 0) { // prevents only-whitespace input from being entered
+=======
+	if (alphaCount == 0) {
+>>>>>>> 99e008b96d3cb3bbf1ae99a808535d3cde3f9a9c
 		cout << "Invald input! Please try again!\n\n";
 		return false;
 	}
