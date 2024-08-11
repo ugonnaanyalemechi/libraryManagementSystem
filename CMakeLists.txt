@@ -9,6 +9,8 @@ set(SOURCE_FILES
 	Staff.cpp
 	BookManager.cpp
 	sha256.cpp
+	BookSearch.cpp
+	BookInfo.cpp
 )
 
 set(CMAKE_CXX_STANDARD 20)

@@ -4,15 +4,18 @@
 #include <pqxx/pqxx>
 #include "MenuManager.h"
 #include "EntryManager.h"
+#include "User.h"
+#include "Staff.h"
+#include "BookSearch.h"
 #include "extern.h"
 
 using namespace std;
 
 string connInfo;
 MenuManager menuManager;
-BookManager bookManager;
-EntryManager entryManager;
 pqxx::connection* conn;
+User* user = nullptr;
+Staff* admin = nullptr;
 
 void retrieveConnInfo(fstream& inputFile) {
 	inputFile.open("../../../../connInfo.txt");

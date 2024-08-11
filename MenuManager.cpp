@@ -4,6 +4,8 @@
 #include "extern.h"
 
 using namespace std;
+BookSearch bookSearch;
+EntryManager entryManager;
 
 int MenuManager::getUserInput() {
 	int input;
@@ -34,10 +36,10 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 	system("cls");
 	switch (userInput) {
 		case 1:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			bookSearch.searchBookProcess();
 			break;
 		case 2:
-			cout << "Feature unavailable. Please try again later.\n\n";
+			entryManager.signInUser();
 			break;
 		case 3:
 			entryManager.registerLibraryMember();
@@ -54,7 +56,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 
 void MenuManager::showMemberMainMenu() {
 	cout << "--------------------- Main Menu ---------------------\n\n";
-	cout << "Welcome \"Username\"\n\n";
+	cout << "Welcome, " << user->getFirstName() << "\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - View My Loans\n";
 	cout << setw(5) << "" << "3 - Edit My Account Info\n";
@@ -68,7 +70,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookSearch.searchBookProcess();
 		break;
 	case 2:
 		cout << "Feature unavailable. Please try again later.\n\n";
@@ -77,7 +79,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 4:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		user->signOut();
 		break;
 	case 5:
 		cout << "Exiting...";
@@ -87,12 +89,14 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Invalid option selected...\n\n";
 		break;
 	}
+	while (user != nullptr) {
+		showMemberMainMenu();
+	}
 }
 
 void MenuManager::showAdminMainMenu() {
-	cout << "Welcome \"Username\"\n\n";
-	cout << "Administrator Menu" << endl;
-	cout << "--------------------------------------------------------------------------\n";
+	cout << "Welcome, " << admin->getFirstName() << "\n\n";
+	cout << "--------------------- Main Menu - Library Staff ---------------------\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - Add Books\n";
 	cout << setw(5) << "" << "3 - Edit Books\n";
@@ -104,17 +108,18 @@ void MenuManager::showAdminMainMenu() {
 }
 
 void MenuManager::processAdminMainMenu(int userInput) {
+	BookManager* bookManager = new BookManager();
 	system("cls");
 	switch (userInput)
 	{
 	case 1:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		bookSearch.searchBookProcess();
 		break;
 	case 2:
-		bookManager.addBookProcess();
+		bookManager->addBookProcess();
 		break;
 	case 3:
-		bookManager.editBookProcess();
+		bookManager->editBookProcess();
 		break;
 	case 4:
 		cout << "Feature unavailable. Please try again later.\n\n";
@@ -123,7 +128,7 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 6:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		admin->staffSignOut();
 		break;
 	case 7:
 		cout << "Exiting...";
@@ -132,5 +137,9 @@ void MenuManager::processAdminMainMenu(int userInput) {
 	default:
 		cout << "Invalid option selected...\n\n";
 		break;
+	}
+
+	while (admin != nullptr) {
+		showAdminMainMenu();
 	}
 }

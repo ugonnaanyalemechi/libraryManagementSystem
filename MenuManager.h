@@ -5,13 +5,13 @@ class MenuManager
 {
 private:
 	bool quit = false;
-	int getUserInput();
-	void showWelcomeMenu();
 	void processWelcomeMenuInput(int);
-	void showMemberMainMenu();
 	void processMemberMainMenu(int);
-	void showAdminMainMenu();
 	void processAdminMainMenu(int);
 public:
+	int getUserInput();
 	void beginMenuProcess();
+	void showWelcomeMenu();
+	void showAdminMainMenu();
+	void showMemberMainMenu();
 };
