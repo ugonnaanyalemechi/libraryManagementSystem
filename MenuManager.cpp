@@ -89,6 +89,9 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Invalid option selected...\n\n";
 		break;
 	}
+	while (user != nullptr) {
+		showMemberMainMenu();
+	}
 }
 
 void MenuManager::showAdminMainMenu() {
@@ -134,5 +137,9 @@ void MenuManager::processAdminMainMenu(int userInput) {
 	default:
 		cout << "Invalid option selected...\n\n";
 		break;
+	}
+
+	while (admin != nullptr) {
+		showAdminMainMenu();
 	}
 }
