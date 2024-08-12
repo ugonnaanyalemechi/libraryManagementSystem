@@ -4,9 +4,10 @@ BookInfo::BookInfo() {
     bookID = 0;
     title = "N/A";
     author = "N/A";
-    std::string publisher = "N/A";
-    std::string publicationDate = "N/A";
-    int availableCopies = 0;
+    genre = "N/A";
+    publisher = "N/A";
+    publicationDate = "N/A";
+    availableCopies = 0;
 }
 
 BookInfo::BookInfo(int newBookID, std::string newBookTitle, std::string newBookAuthor, std::string newBookGenre, 

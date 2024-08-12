@@ -10,7 +10,7 @@ void BookSearch::searchBookProcess() {
     displaySearchBookUI();
     char userInput = '0';
     while (true) {
-        ;       cout << "Search again? (Y/N): ";
+        cout << "Search again? (Y/N): ";
         cin >> userInput;
         userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
@@ -30,7 +30,7 @@ void BookSearch::searchBookProcess() {
 void BookSearch::displaySearchBookUI() {
     cout << "--------------- Search Books:  ---------------" << endl;
     cout << "Search by:\n";
-    cout << "#1. Book ID#\n#2. Title\n#3. Author\n#4. Publisher\n#5. Date Published\n#6. Cancel Operation\n\n";
+    cout << "#1. Book ID#\n#2. Title\n#3. Author\n#4. Genre\n#5. Publisher\n#6. Date Published\n#7. Cancel Operation\n\n";
     cout << "Please enter the numerical digit of the option you would like to select...\n";
     cout << "Enter here: ";
     int menuIntInput;
@@ -78,20 +78,27 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         processRichBookTextSearch(userInput, 0, "title");
         break;
     case 3:
-        cout << "Enter a Author: ";
+        cout << "Enter an Author: ";
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
         processRichBookTextSearch(userInput, 0, "author");
         break;
     case 4:
+        cout << "Enter a Genre: ";
+        cin.ignore();
+        getline(cin, userInput);
+        cout << "--------------- Search Results:  ---------------\n";
+        processRichBookTextSearch(userInput, 0, "genre");
+        break;
+    case 5:
         cout << "Enter a Publisher: ";
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
         processRichBookTextSearch(userInput, 0, "publisher");
         break;
-    case 5:
+    case 6:
         cout << "Enter the Publication Date (YYYY-MM-DD): ";
         cin.ignore();
         getline(cin, userInput);
@@ -103,7 +110,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         cout << "--------------- Search Results:  ---------------\n";
         processPublicationDateSearch(userInput);
         break;
-    case 6:
+    case 7:
         break;
     default:
         cout << "Invalid option selected...\n\n";
@@ -120,12 +127,13 @@ std::string BookSearch::formatSearchText(const std::string& userSearchInput) {
 }
 
 void BookSearch::prepareRichBookSearch() {
-    string searchTypes[3] = { "title", "author", "publisher"};
+    const int richSearchTypeTotal = 4;
+    string searchTypes[richSearchTypeTotal] = { "title", "author", "genre", "publisher"};
 
     //Prepares search for text-based searches
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < richSearchTypeTotal; i++) {
         try {
-            conn->prepare("book_search_" + searchTypes[i] + "", "SELECT book_id, title, author, publisher, publication_date, available_copies FROM public.books WHERE " + searchTypes[i] + "_tsvector @@ to_tsquery('english', $1) LIMIT $2 OFFSET $3");
+            conn->prepare("book_search_" + searchTypes[i] + "", "SELECT book_id, title, author, genre, publisher, publication_date, available_copies FROM public.books WHERE " + searchTypes[i] + "_tsvector @@ to_tsquery('english', $1) LIMIT $2 OFFSET $3");
         }
         catch(const pqxx::sql_error& e) {
             //error handling is neccessary because prepared statement might still exist within current session
@@ -136,7 +144,7 @@ void BookSearch::prepareRichBookSearch() {
 
     //Prepares search for publication_date searches
     try {
-        conn->prepare("book_search_publication_date", "SELECT book_id, title, author, publisher, publication_date, available_copies FROM public.books WHERE publication_date = $1");
+        conn->prepare("book_search_publication_date", "SELECT book_id, title, author, genre, publisher, publication_date, available_copies FROM public.books WHERE publication_date = $1");
     }
     catch(const pqxx::sql_error& e) {
         if (string(e.what()).find("Failure during \'[PREPARE book_search_publication_date]\': ERROR:  prepared statement \"book_search_publication_date\" already exists"))
@@ -154,6 +162,7 @@ void BookSearch::processPublicationDateSearch(std::string userDateInput) {
             bookData->setBookID(row["book_id"].as<int>());
             bookData->setBookTitle(row["title"].c_str());
             bookData->setBookAuthor(row["author"].c_str());
+            bookData->setBookGenre(row["genre"].c_str());
             bookData->setBookPublisher(row["publisher"].c_str());
             bookData->setBookPublicationDate(row["publication_date"].c_str());
             bookData->setAvailableCopies(row["available_copies"].as<int>());
@@ -186,6 +195,7 @@ void BookSearch::processRichBookTextSearch(std::string userSearchTerm, int resul
             bookData->setBookID(row["book_id"].as<int>());
             bookData->setBookTitle(row["title"].c_str());
             bookData->setBookAuthor(row["author"].c_str());
+            bookData->setBookGenre(row["genre"].c_str());
             bookData->setBookPublisher(row["publisher"].c_str());
             bookData->setBookPublicationDate(row["publication_date"].c_str());
             bookData->setAvailableCopies(row["available_copies"].as<int>());
