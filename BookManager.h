@@ -5,7 +5,7 @@
 class BookManager{
 private:
     
-    void appendBookToDatabase(std::string, std::string, std::string, std::string, int);
+    void appendBookToDatabase(std::string, std::string, std::string, std::string, std::string, int);
     void displayAddBookUI();
     void displayEditBookUI();
     void processBookChanges(std::string,int ,std::string);
