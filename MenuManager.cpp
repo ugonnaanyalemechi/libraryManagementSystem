@@ -83,7 +83,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		break;
 	case 5:
 		cout << "Exiting...";
-		quit = true;
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		cout << "Invalid option selected...\n\n";
@@ -132,7 +132,7 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		break;
 	case 7:
 		cout << "Exiting...";
-		quit = true;
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		cout << "Invalid option selected...\n\n";
