@@ -182,7 +182,7 @@ void BookSearch::processPublicationDateSearch(std::string userDateInput) {
     }
     catch (const pqxx::usage_error& e) {
         cerr << "Usage error: " << e.what() << '\n';
-        throw;
+            throw;
     }
 }
 
