@@ -5,7 +5,7 @@
 #pragma warning(disable:6385)
 using namespace std;
 
-bool checkDate(string dateInput) {
+bool BookManager::checkDate(string dateInput) {
     if (dateInput.length() != 10) {
         return false;
     }
@@ -114,7 +114,7 @@ void BookManager::editBookProcess() {
     displayEditBookUI();
     char userInput = '0';
     while (true) {
-        ;       cout << "Edit another book? (Y/N): ";
+        cout << "Edit another book? (Y/N): ";
         cin >> userInput;
         userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
@@ -163,6 +163,11 @@ void BookManager::displayEditBookUI() {
     isBookIDValid = false;
     cout << "Enter a valid book ID#: ";
     cin >> bookID;
+    while (!std::cin.good())
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     allocatePreparedEditStatement();
     retrieveBookByID(bookID, bookDisplayData);
 

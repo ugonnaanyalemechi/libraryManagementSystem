@@ -4,6 +4,7 @@
 
 class BookManager{
 private:
+    
     void appendBookToDatabase(std::string, std::string, std::string, std::string, int);
     void displayAddBookUI();
     void displayEditBookUI();
@@ -20,6 +21,7 @@ private:
     bool isBookIDValid; 
     void retrieveBookByID(int, BookInfo*&);
 public:
+    bool checkDate(std::string);
     void addBookProcess();
     void editBookProcess();
     bool retrieveBookByID(BookInfo* bookData);
