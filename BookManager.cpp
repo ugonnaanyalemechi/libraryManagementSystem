@@ -256,21 +256,65 @@ void BookManager::retrieveBookByID(int bookID, BookInfo*& bookData) {
         std::cerr << "Rolling back transaction and aborting...\n";
     }
 }
+void BookManager::displayBookListHeader() {
+    cout << left <<setw(maxIdDisplayLength) <<"ID#:";
+    cout << setw(maxTitleDisplayLength+6) << "Title:";
+    cout << setw(maxAuthorDisplayLength+6) << "Author(s):";
+    cout << setw(maxGenreDisplayLength+6) << "Genre(s):";
+    cout << setw(maxPublisherDisplayLength +6) << "Publisher(s):";
+    cout << setw(17) << "Date Published:";
+    cout << "Available copies:";
+    cout << endl;
+}
 
 void BookManager::displayBookData(BookInfo* bookData) {
-    cout << bookData->retrieveBookID() << "\t"
-        << bookData->retrieveBookTitle() << "\t"
-        << bookData->retrieveBookAuthor() << "\t"
-        << bookData->retrieveBookGenre() << "\t"
-        << bookData->retrieveBookPublisher() << "\t"
-        << bookData->retrieveBookPublicationDate() << "\t"
-        << bookData->retrieveAvailableCopies();
+    cout << left << setw(6) << bookData->retrieveBookID();
+
+    if (bookData->retrieveBookTitle().length() > maxTitleDisplayLength) {
+        cout << setw(maxTitleDisplayLength) << bookData->retrieveBookTitle().substr(0,maxTitleDisplayLength);
+        cout  << setw(6) << "...";
+    }
+    else {
+        cout << setw(maxTitleDisplayLength+6) << bookData->retrieveBookTitle();
+    }
+
+
+    if (bookData->retrieveBookAuthor().length() > maxAuthorDisplayLength) {
+        cout << setw(maxAuthorDisplayLength) << bookData->retrieveBookAuthor().substr(0, maxAuthorDisplayLength);
+        cout << setw(6) << "...";
+    }
+    else {
+        cout << setw(maxAuthorDisplayLength + 6) << bookData->retrieveBookAuthor();
+    }
+
+
+    if (bookData->retrieveBookGenre().length() > maxGenreDisplayLength) {
+        cout << setw(maxGenreDisplayLength) << bookData->retrieveBookGenre().substr(0, maxGenreDisplayLength);
+        cout << setw(6) << "...";
+    }
+    else {
+        cout << setw(maxGenreDisplayLength + 6) << bookData->retrieveBookGenre();
+    }
+
+
+    if (bookData->retrieveBookPublisher().length() > maxPublisherDisplayLength) {
+        cout << setw(maxPublisherDisplayLength) << bookData->retrieveBookPublisher().substr(0, maxPublisherDisplayLength);
+        cout << setw(6) << "...";
+    }
+    else {
+        cout << setw(maxPublisherDisplayLength + 6) << bookData->retrieveBookPublisher();
+    }
+
+    cout << setw(17) << bookData->retrieveBookPublicationDate();
+    cout << bookData->retrieveAvailableCopies();
+
+
 }
 
 void BookManager::editBookMenuUI(BookInfo*& storedBookData) {
     isBookIDValid = false;
     cout << "Book Found: \n";
-
+    displayBookListHeader();
     displayBookData(storedBookData);
 
     cout << endl << endl;
@@ -295,10 +339,12 @@ int BookManager::convertStringToInt(string stringInt) {
 
 bool BookManager::displayChanges(BookInfo*& storedBookData, BookInfo*& newBookData) {
     cout << "\nBefore change:\n";
+    displayBookListHeader();
     displayBookData(storedBookData);
     cout << endl;
     
     cout << "\nAfter change:\n";
+    displayBookListHeader();
     displayBookData(newBookData);
     cout << endl;
 

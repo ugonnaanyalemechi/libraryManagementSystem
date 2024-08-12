@@ -62,6 +62,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         }
         bookDisplayData->setBookID(bookID);
         cout << "--------------- Search Results:  ---------------\n";
+        bookManager.displayBookListHeader();
         if (bookManager.retrieveBookByID(bookDisplayData)) {
             bookManager.displayBookData(bookDisplayData);
             cout << endl << endl;
@@ -75,6 +76,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
+        bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "title");
         break;
     case 3:
@@ -82,6 +84,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
+        bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "author");
         break;
     case 4:
@@ -89,6 +92,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
+        bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "genre");
         break;
     case 5:
@@ -96,6 +100,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
+        bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "publisher");
         break;
     case 6:
@@ -108,6 +113,7 @@ void BookSearch::processSearchMenuInput(int menuInput) {
             getline(cin, userInput);
         }
         cout << "--------------- Search Results:  ---------------\n";
+        bookManager.displayBookListHeader();
         processPublicationDateSearch(userInput);
         break;
     case 7:
