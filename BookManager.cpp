@@ -68,6 +68,12 @@ void BookManager::displayAddBookUI() {
     cin >> availableCopies;
 
     while (availableCopies < 1) {
+        while (!std::cin.good())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+
         cout << "Invalid copy amount entered!" << endl;
         cout << "Enter available copies: ";
         cin >> availableCopies;
@@ -412,6 +418,12 @@ void BookManager::manageEditMenuSelection(int selectedOption, BookInfo*& storedB
         cout << "Previous copy count: " << storedBookData->retrieveAvailableCopies() << endl;
         cout << "Enter updated available copy count: ";
         cin >> userIntInput;
+
+        while (!std::cin.good())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
 
         while (userIntInput < 1) {
             cout << "Invalid copy amount entered!" << endl;
