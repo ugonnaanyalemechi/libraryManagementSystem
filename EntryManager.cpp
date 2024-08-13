@@ -429,6 +429,7 @@ void EntryManager::processAccountChanges(int userInput, string email) {
 		changeType = "pass_hash";
 		break;
 	case 5:
+		system("cls");
 		break;
 	default:
 		cout << "Invalid option selected...\n\n";
