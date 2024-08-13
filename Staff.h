@@ -9,7 +9,7 @@ class Staff :
 {
 private:
 	string identifyMemberToPromote();
-	bool checkMemberExists();
+	bool checkMemberExists(string, string&, string&);
 	void promoteMemberToStaff(string);
 public:
 	Staff(string, string);
