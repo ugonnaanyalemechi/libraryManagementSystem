@@ -10,6 +10,7 @@ class Staff :
 private:
 	string identifyMemberToPromote();
 	bool checkMemberExists(string, string&, string&);
+	bool confirmPromotion(string, string, bool&);
 	void promoteMemberToStaff(string);
 public:
 	Staff(string, string);

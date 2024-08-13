@@ -20,20 +20,23 @@ void Staff::staffSignOut() {
 void Staff::promoteMemberToStaffProcess() {
 	string memberEmaill, memberFirstName, memberLastName;
 	bool memberExists = false;
+	bool promotionConfirmed = false;
 	
-	while (!memberExists) {
+	while (!promotionConfirmed) {
 		string memberEmail = identifyMemberToPromote();
 
 		if (memberEmail == "c") { // if the user wants to cancel the operation
 			system("cls");
 			break;
 		}
-		else
+		else {
 			memberExists = checkMemberExists(memberEmail, memberFirstName, memberLastName);
-			;
+			if (memberExists)
+				promotionConfirmed = confirmPromotion(memberFirstName, memberLastName, memberExists);
+		}
 	}
 
-	if (memberExists)
+	if (promotionConfirmed)
 		//promoteMemberToStaff(userEmail);
 		;
 }
@@ -77,4 +80,28 @@ bool Staff::checkMemberExists(string memberEmail, string& memberFirstName, strin
 	}
 
 	return true;
+}
+
+bool Staff::confirmPromotion(string memberFirstName, string memberLastName, bool& memberExists) {
+	bool inputIsInvalid = false;
+	char decision;
+
+	system("cls");
+	while (!inputIsInvalid) {
+		cout << "Are you sure you would like to promote " << memberFirstName << " " << memberLastName << " to library staff member?\n";
+		cout << "Enter 'y' or 'n': "; cin >> decision;
+		cin.clear(); cin.ignore(1);
+
+		if (decision == 'y')
+			return true;
+		else if (decision == 'n') {
+			system("cls");
+			memberExists = false;
+			return false;
+		}
+		else {
+			system("cls");
+			cout << "Invalid input! Please try again!\n\n";
+		}
+	}
 }
