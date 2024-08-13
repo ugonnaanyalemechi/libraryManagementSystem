@@ -118,12 +118,16 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
 
 
     if (validSearchSelected) {
+        bool firstRun = true;
         bool isBookIdValid = false;
         string optionInput;
         while (!isBookIdValid) {
             cout << "\nEnter a Book ID# to view more details and options (enter 'C' to cancel): ";
-            if (menuInput == 200)
+            if (menuInput == 200 && firstRun) {
                 cin.ignore();
+                firstRun = false;
+            }
+                
             getline(cin, optionInput);
 
             if (toupper(optionInput[0]) == 'C') {
