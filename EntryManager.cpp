@@ -104,7 +104,6 @@ string EntryManager::createPassword() {
 
 	cout << "Enter password: ";
 	inputtedPassword = hideCharacterInput();
-
 	confirmNewPassword(inputtedPassword);
 	return sha256(inputtedPassword);
 }
@@ -282,4 +281,212 @@ bool EntryManager::checkUserIsLibraryAdmin(string email) {
 	if (userTypeResult.size() == 0)
 		return false;
 	return true;
+}
+
+void EntryManager::adminEditUserProcess() {
+	string userInput;
+	user = new User();
+	do {
+		cout << "Enter a member email: ";
+		getline(cin, userInput);
+		system("cls");
+	} while (!retrieveUserAccountInfo(userInput));
+	user->setEmail(userInput);
+	displayUserAccountEdit();
+
+	char userCharInput = '0';
+	while (true) {
+		cout << "Edit another member? (Y/N): ";
+		cin >> userCharInput;
+		userCharInput = toupper(userCharInput);
+		if (userCharInput != 'Y' && userCharInput != 'N') {
+			cout << "Invalid option selected...\n";
+		}
+		else if (userCharInput == 'Y') {
+			system("cls");
+			do {
+				cout << "Enter a member email: ";
+				cin.ignore();
+				getline(cin, userInput);
+				system("cls");
+			} while (!retrieveUserAccountInfo(userInput));
+			user->setEmail(userInput);
+			displayUserAccountEdit();
+		}
+		else {
+			system("cls");
+			break;
+		}
+	}
+	delete user;
+	user = nullptr;
+}
+
+void EntryManager::selfEditUserProcess(string email) {
+	bool userNullAtStart = false;
+	if (user == nullptr) {
+		userNullAtStart = true;
+		user = new User();
+	}
+	retrieveUserAccountInfo(email);
+	user->setEmail(email);
+	displayUserAccountEdit();
+	if (userNullAtStart) {
+		retrieveUserAccountInfo(email);
+		admin->setFirstName(user->getFirstName());
+		delete user;
+	}
+	else {
+		retrieveUserAccountInfo(email);
+	}
+}
+
+void EntryManager::displayUserAccountInfo() {
+	cout << "First Name: " << user->getFirstName() << endl;
+	cout << "Last Name: " << user->getlastName() << endl;
+	cout << "Email: " << user->getEmail() << endl;
+}
+
+bool EntryManager::retrieveUserAccountInfo(string email) {
+	try {
+		conn->prepare("retrieveUserInfo", "SELECT first_name, last_name, email FROM users WHERE email = $1");
+	}
+	catch (const pqxx::sql_error& e) {
+		if (string(e.what()).find("Failure during \'[PREPARE retrieveUserInfo]\': ERROR:  prepared statement \"retrieveUserInfo\" already exists"))
+			throw;
+		}
+
+	try {
+		pqxx::work retrieveData(*conn);
+		pqxx::result dataResult = retrieveData.exec_prepared("retrieveUserInfo", email);
+		retrieveData.commit();
+
+		if (dataResult.size() == 0) {
+			system("cls");
+			cout << "Invalid email entered...\n";
+			return false;
+		}
+		else {
+			for (auto row : dataResult) {
+				user->setFirstName(row["first_name"].c_str());
+				user->setLastName(row["last_name"].c_str());
+			}
+		}
+
+	}
+	catch (const pqxx::sql_error& e) {
+		cerr << "SQL error: " << e.what() << '\n';
+	}
+	catch (const pqxx::usage_error& e) {
+		cerr << "Usage error: " << e.what() << '\n';
+		throw;
+	}
+	return true;
+}
+
+void EntryManager::displayUserAccountEdit() {
+	cout << "Current member information:\n";
+	displayUserAccountInfo();
+	cout << "\n\nSelect info to change:\n";
+	cout << "#1. First Name\n#2. Last Name\n#3. Email\n#4. Password\n#5. Cancel Operation\n\n";
+	int selectedAction = menuManager1.getUserInput();
+	processAccountChanges(selectedAction, user->getEmail());
+}
+
+void EntryManager::processAccountChanges(int userInput, string email) {
+	allocatePreparedAccountEditStatement();
+	system("cls");
+	cout << "Current member information:\n";
+	displayUserAccountInfo();
+	cout << endl << endl;
+
+	string userStringInput;
+	string changeType;
+	bool confirmChangePrompt = false;
+	switch (userInput) {
+	case 1:
+		cout << "Enter a new first name: ";
+		getline(cin, userStringInput);
+		confirmChangePrompt = true;
+		changeType = "first_name";
+		break;
+	case 2:
+		cout << "Enter a new last name: ";
+		getline(cin, userStringInput);
+		confirmChangePrompt = true;
+		changeType = "last_name";
+		break;
+	case 3:
+		cout << "Enter a new email: ";
+		getline(cin, userStringInput);
+		confirmChangePrompt = true;
+		changeType = "email";
+		break;
+	case 4:
+		cout << "--------------------- Create a new password ---------------------\n\n";
+		userStringInput = createPassword();
+		confirmChangePrompt = true;
+		changeType = "pass_hash";
+		break;
+	case 5:
+		break;
+	default:
+		cout << "Invalid option selected...\n\n";
+		displayUserAccountEdit();
+		break;
+	}
+
+	if (confirmChangePrompt) {
+		char userCharInput = '0';
+		while (true) {
+			cout << "Confirm Change? (Y/N): ";
+			cin >> userCharInput;
+			userCharInput = toupper(userCharInput);
+			if (userCharInput != 'Y' && userCharInput != 'N') {
+				cout << "Invalid option selected...\n";
+			}
+			else if (userCharInput == 'Y') {
+				applyAccountChanges(userStringInput, changeType);
+				system("cls");
+				cout << "Change applied successfully!\n";
+				break;
+			}
+			else {
+				system("cls");
+				displayUserAccountEdit();
+				break;
+			}
+		}
+	}
+}
+
+void EntryManager::allocatePreparedAccountEditStatement() {
+	const int totalOptions = 4;
+	string editOptions[totalOptions] = {"first_name", "last_name", "email", "pass_hash"};
+
+	for (int i = 0; i < totalOptions; i++) {
+		try {
+			conn->prepare("edit_user_" + editOptions[i] + "", "UPDATE users SET " + editOptions[i] + " = $1 WHERE email = $2");
+		}
+		catch (const pqxx::sql_error& e) {
+			//error handling is neccessary because prepared statement might still exist within current session
+			if (string(e.what()).find("Failure during \'[PREPARE edit_user_" + editOptions[i] + "]\': ERROR:  prepared statement \"edit_user_" + editOptions[i] + "\" already exists"))
+				throw;
+		}
+	}
+}
+
+void EntryManager::applyAccountChanges(string userChange, string changeType) {
+	try {
+		pqxx::work applyChange(*conn);
+		applyChange.exec_prepared("edit_user_" + changeType, userChange, user->getEmail());
+		applyChange.commit();
+	}
+	catch (const pqxx::sql_error& e) {
+		cerr << "SQL error: " << e.what() << '\n';
+	}
+	catch (const pqxx::usage_error& e) {
+		cerr << "Usage error: " << e.what() << '\n';
+		throw;
+	}
 }

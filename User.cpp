@@ -6,11 +6,16 @@
 using namespace std;
 MenuManager menuManager2;
 
-User::User() {}
+User::User() {
+	email = "N/A";
+	firstName = "N/A";
+	lastName = "N/A";
+}
 
 User::User(string email, string firstName) {
 	this->email = email;
 	this->firstName = firstName;
+	this->lastName = "N/A";
 }
 
 void User::signOut() {
@@ -26,3 +31,20 @@ string User::getEmail() {
 string User::getFirstName() {
 	return firstName;
 }
+
+string User::getlastName() {
+	return lastName;
+}
+
+void User::setEmail(string newEmail) {
+	email = newEmail;
+}
+
+void User::setFirstName(string newFirstName) {
+	firstName = newFirstName;
+}
+
+void User::setLastName(string newLastName) {
+	lastName = newLastName;
+}
+
