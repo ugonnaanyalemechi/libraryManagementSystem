@@ -187,7 +187,7 @@ void BookManager::displayEditBookUI() {
 
 }
 
-bool BookManager::retrieveBookByID(BookInfo* bookData) {
+bool BookManager::retrieveBookByID(BookInfo*& bookData) {
     allocatePreparedRetrieveStatement();
     //placing the pqxx::work statement into a try-catch block ensures a new transaction is created each time
     try {
@@ -260,14 +260,21 @@ void BookManager::displayBookListHeader() {
     cout << left <<setw(maxIdDisplayLength) <<"ID#:";
     cout << setw(maxTitleDisplayLength+6) << "Title:";
     cout << setw(maxAuthorDisplayLength+6) << "Author(s):";
-    cout << setw(maxGenreDisplayLength+6) << "Genre(s):";
-    cout << setw(maxPublisherDisplayLength +6) << "Publisher(s):";
-    cout << setw(17) << "Date Published:";
     cout << "Available copies:";
     cout << endl;
 }
 
-void BookManager::displayBookData(BookInfo* bookData) {
+void BookManager::displayBookListFullInfo(BookInfo* bookData) {
+    cout << "Book ID#:         " << bookData->retrieveBookID() << endl;
+    cout << "Title:            " << bookData->retrieveBookTitle() << endl;
+    cout << "Author(s):        " << bookData->retrieveBookAuthor() << endl;
+    cout << "Genre(s):         " << bookData->retrieveBookGenre() << endl;
+    cout << "Publisher(s):     " << bookData->retrieveBookPublisher() << endl;
+    cout << "Publication Date: " << bookData->retrieveBookPublicationDate() << endl;
+    cout << "Available Copies: " << bookData->retrieveAvailableCopies() << endl;
+}
+
+void BookManager::displayBookDataListFormat(BookInfo* bookData) {
     cout << left << setw(6) << bookData->retrieveBookID();
 
     if (bookData->retrieveBookTitle().length() > maxTitleDisplayLength) {
@@ -286,36 +293,14 @@ void BookManager::displayBookData(BookInfo* bookData) {
     else {
         cout << setw(maxAuthorDisplayLength + 6) << bookData->retrieveBookAuthor();
     }
-
-
-    if (bookData->retrieveBookGenre().length() > maxGenreDisplayLength) {
-        cout << setw(maxGenreDisplayLength) << bookData->retrieveBookGenre().substr(0, maxGenreDisplayLength);
-        cout << setw(6) << "...";
-    }
-    else {
-        cout << setw(maxGenreDisplayLength + 6) << bookData->retrieveBookGenre();
-    }
-
-
-    if (bookData->retrieveBookPublisher().length() > maxPublisherDisplayLength) {
-        cout << setw(maxPublisherDisplayLength) << bookData->retrieveBookPublisher().substr(0, maxPublisherDisplayLength);
-        cout << setw(6) << "...";
-    }
-    else {
-        cout << setw(maxPublisherDisplayLength + 6) << bookData->retrieveBookPublisher();
-    }
-
-    cout << setw(17) << bookData->retrieveBookPublicationDate();
     cout << bookData->retrieveAvailableCopies();
-
-
 }
 
 void BookManager::editBookMenuUI(BookInfo*& storedBookData) {
     isBookIDValid = false;
-    cout << "Book Found: \n";
-    displayBookListHeader();
-    displayBookData(storedBookData);
+    cout << "Book Found: \n\n";
+    //displayBookListHeader();
+    displayBookListFullInfo(storedBookData);
 
     cout << endl << endl;
     cout << "What would you like to modify?\n";
@@ -339,18 +324,16 @@ int BookManager::convertStringToInt(string stringInt) {
 
 bool BookManager::displayChanges(BookInfo*& storedBookData, BookInfo*& newBookData) {
     cout << "\nBefore change:\n";
-    displayBookListHeader();
-    displayBookData(storedBookData);
+    displayBookListFullInfo(storedBookData);
     cout << endl;
     
     cout << "\nAfter change:\n";
-    displayBookListHeader();
-    displayBookData(newBookData);
+    displayBookListFullInfo(newBookData);
     cout << endl;
 
     while (true) {
         char userInput;
-        cout << "\n\nConfirm change? (Y/N): ";
+        cout << "\nConfirm change? (Y/N): ";
         cin >> userInput;
         userInput = toupper(userInput);
         if (userInput != 'Y' && userInput != 'N') {
@@ -546,7 +529,7 @@ void BookManager::allocatePreparedDeletionStatement() {
 void BookManager::bookDeletionProcess(int bookID, BookInfo* storedBookData) {
 
     cout << "Book to be deleted:\n";
-    displayBookData(storedBookData);
+    displayBookDataListFormat(storedBookData);
 
     cout << endl;
 

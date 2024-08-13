@@ -7,7 +7,8 @@ using namespace std;
 BookManager bookManager;
 
 void BookSearch::searchBookProcess() {
-    displaySearchBookUI();
+    BookInfo* savedBookSearchResults = new BookInfo[25];
+    displaySearchBookUI(savedBookSearchResults);
     char userInput = '0';
     while (true) {
         cout << "Search again? (Y/N): ";
@@ -18,19 +19,20 @@ void BookSearch::searchBookProcess() {
         }
         else if (userInput == 'Y') {
             system("cls");
-            displaySearchBookUI();
+            displaySearchBookUI(savedBookSearchResults);
         }
         else {
             system("cls");
             break;
         }
     }
+    delete[] savedBookSearchResults;
 }
 
-void BookSearch::displaySearchBookUI() {
+void BookSearch::displaySearchBookUI(BookInfo*& savedBookSearchResults) {
     cout << "--------------- Search Books:  ---------------" << endl;
     cout << "Search by:\n";
-    cout << "#1. Book ID#\n#2. Title\n#3. Author\n#4. Genre\n#5. Publisher\n#6. Date Published\n#7. Cancel Operation\n\n";
+    cout << "#1. Book ID#\n#2. Title\n#3. Author\n#4. Genre\n#5. Cancel Operation\n\n";
     cout << "Please enter the numerical digit of the option you would like to select...\n";
     cout << "Enter here: ";
     int menuIntInput;
@@ -41,12 +43,21 @@ void BookSearch::displaySearchBookUI() {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-
-    processSearchMenuInput(menuIntInput);
+    
+    processSearchMenuInput(menuIntInput, savedBookSearchResults);
 }
 
-void BookSearch::processSearchMenuInput(int menuInput) {
-    system("cls");
+bool isStringAnInt(const string userString) {
+    return userString.find_first_not_of("0123456789") == string::npos;
+}
+
+void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearchResults) {
+    bool validSearchSelected = false;
+
+    if (menuInput != 200) {
+        system("cls");
+    } 
+
     std::string userInput;
     BookInfo* bookDisplayData = new BookInfo();
     prepareRichBookSearch();
@@ -61,69 +72,113 @@ void BookSearch::processSearchMenuInput(int menuInput) {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         bookDisplayData->setBookID(bookID);
-        cout << "--------------- Search Results:  ---------------\n";
-        bookManager.displayBookListHeader();
+        cout << "--------------- Search Result:  ---------------\n";
         if (bookManager.retrieveBookByID(bookDisplayData)) {
-            bookManager.displayBookData(bookDisplayData);
+            bookManager.displayBookListHeader();
+            bookManager.displayBookDataListFormat(bookDisplayData);
             cout << endl << endl;
-        }
-        else {
-            cout << "Book not found!\n\n";
         }
         break;
     case 2:
+        validSearchSelected = true;
         cout << "Enter a Title: ";
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
         bookManager.displayBookListHeader();
-        processRichBookTextSearch(userInput, 0, "title");
+        processRichBookTextSearch(userInput, 0, "title", savedBookSearchResults);
         break;
     case 3:
+        validSearchSelected = true;
         cout << "Enter an Author: ";
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
         bookManager.displayBookListHeader();
-        processRichBookTextSearch(userInput, 0, "author");
+        processRichBookTextSearch(userInput, 0, "author", savedBookSearchResults);
         break;
     case 4:
+        validSearchSelected = true;
         cout << "Enter a Genre: ";
         cin.ignore();
         getline(cin, userInput);
         cout << "--------------- Search Results:  ---------------\n";
         bookManager.displayBookListHeader();
-        processRichBookTextSearch(userInput, 0, "genre");
+        processRichBookTextSearch(userInput, 0, "genre", savedBookSearchResults);
         break;
     case 5:
-        cout << "Enter a Publisher: ";
-        cin.ignore();
-        getline(cin, userInput);
-        cout << "--------------- Search Results:  ---------------\n";
-        bookManager.displayBookListHeader();
-        processRichBookTextSearch(userInput, 0, "publisher");
         break;
-    case 6:
-        cout << "Enter the Publication Date (YYYY-MM-DD): ";
-        cin.ignore();
-        getline(cin, userInput);
-        while (!bookManager.checkDate(userInput)) {
-            cout << "Invalid date format entered!" << endl;
-            cout << "Enter the Publication Date (YYYY-MM-DD): ";
-            getline(cin, userInput);
-        }
-        cout << "--------------- Search Results:  ---------------\n";
-        bookManager.displayBookListHeader();
-        processPublicationDateSearch(userInput);
-        break;
-    case 7:
+    case 200:
+        validSearchSelected = true;
         break;
     default:
         cout << "Invalid option selected...\n\n";
-        displaySearchBookUI();
+        displaySearchBookUI(savedBookSearchResults);
         break;
     }
+
+
+    if (validSearchSelected) {
+        bool isBookIdValid = false;
+        string optionInput;
+
+        if (!isBookIdValid) {
+            cout << "\nEnter a Book ID# to view more details and options (enter 'C' to cancel): ";
+            if (menuInput == 200)
+                cin.ignore();
+            getline(cin, optionInput);
+
+            if (toupper(optionInput[0]) == 'C') {
+                isBookIdValid = true;
+            }
+            else if (isStringAnInt(optionInput) && optionInput.length() != 0) {
+                isBookIdValid = true;
+                int bookIndex = stoi(optionInput);
+                bookDisplayData->setBookID(bookIndex);
+                bookManager.retrieveBookByID(bookDisplayData);
+                system("cls");
+                bookManager.displayBookListFullInfo(bookDisplayData);
+                cout << endl;
+
+                char searchReturnInput = '0';
+                while (true) {
+                    cout << "Return to search? (Y/N): ";
+                    cin >> searchReturnInput;
+                    searchReturnInput = toupper(searchReturnInput);
+                    if (searchReturnInput != 'Y' && searchReturnInput != 'N') {
+                        cout << "Invalid option selected...\n";
+                    }
+                    else if (searchReturnInput == 'Y') {
+                        system("cls");
+                        displayPreviousSearchResults(savedBookSearchResults);
+                        processSearchMenuInput(200, savedBookSearchResults);
+                        break;
+                    }
+                    else {
+                        system("cls");
+                        break;
+                    }
+                }
+            }
+            else {
+                isBookIdValid = false;
+                cout << "Invalid book ID#...\n";
+            }
+
+        }
+
+    }
     delete bookDisplayData;
+}
+
+void BookSearch::displayPreviousSearchResults(BookInfo* bookSearchResult) {
+    cout << "--------------- Search Results:  ---------------\n";
+    for (int i = 0; i < 25; i++) {
+        if (bookSearchResult[i].retrieveBookID() != 0) {
+            bookManager.displayBookDataListFormat(&bookSearchResult[i]);
+            cout << endl;
+        }
+    }
 }
 
 std::string BookSearch::formatSearchText(const std::string& userSearchInput) {
@@ -133,8 +188,8 @@ std::string BookSearch::formatSearchText(const std::string& userSearchInput) {
 }
 
 void BookSearch::prepareRichBookSearch() {
-    const int richSearchTypeTotal = 4;
-    string searchTypes[richSearchTypeTotal] = { "title", "author", "genre", "publisher"};
+    const int richSearchTypeTotal = 3;
+    string searchTypes[richSearchTypeTotal] = { "title", "author", "genre"};
 
     //Prepares search for text-based searches
     for (int i = 0; i < richSearchTypeTotal; i++) {
@@ -147,49 +202,13 @@ void BookSearch::prepareRichBookSearch() {
                 throw;
         }
     }
-
-    //Prepares search for publication_date searches
-    try {
-        conn->prepare("book_search_publication_date", "SELECT book_id, title, author, genre, publisher, publication_date, available_copies FROM public.books WHERE publication_date = $1");
-    }
-    catch(const pqxx::sql_error& e) {
-        if (string(e.what()).find("Failure during \'[PREPARE book_search_publication_date]\': ERROR:  prepared statement \"book_search_publication_date\" already exists"))
-            throw;
-    }
-}
-
-void BookSearch::processPublicationDateSearch(std::string userDateInput) {
-    resultsRecieved = 0;
-    BookInfo* bookData = new BookInfo();
-    try {
-        pqxx::work processDateSearch(*conn);
-        pqxx::result searchResult = processDateSearch.exec_prepared("book_search_publication_date", userDateInput);
-        for (auto row : searchResult) {
-            bookData->setBookID(row["book_id"].as<int>());
-            bookData->setBookTitle(row["title"].c_str());
-            bookData->setBookAuthor(row["author"].c_str());
-            bookData->setBookGenre(row["genre"].c_str());
-            bookData->setBookPublisher(row["publisher"].c_str());
-            bookData->setBookPublicationDate(row["publication_date"].c_str());
-            bookData->setAvailableCopies(row["available_copies"].as<int>());
-            bookManager.displayBookData(bookData);
-            cout << endl;
-        }
-        processDateSearch.commit();
-    }
-    catch (const pqxx::sql_error& e) {
-        cerr << "SQL error: " << e.what() << '\n';
-    }
-    catch (const pqxx::usage_error& e) {
-        cerr << "Usage error: " << e.what() << '\n';
-            throw;
-    }
 }
 
 
-void BookSearch::processRichBookTextSearch(std::string userSearchTerm, int resultOffset, std::string searchType) {
+void BookSearch::processRichBookTextSearch(std::string userSearchTerm, int resultOffset, std::string searchType, BookInfo*& savedBookSearch) {
     resultsRecieved = 0;
-    BookInfo* bookData = new BookInfo();
+    //BookInfo* bookData = new BookInfo();
+    int rowIterationCounter = 0;
     // Define the search term, limit, and offset
     int limit = 25;
     // Change resultOffset value to paginate through results
@@ -198,15 +217,16 @@ void BookSearch::processRichBookTextSearch(std::string userSearchTerm, int resul
         pqxx::work processTitleSearch(*conn);
         pqxx::result searchResult = processTitleSearch.exec_prepared("book_search_" + searchType + "", formattedUserSearchTerm, limit, resultOffset);
         for (auto row : searchResult) {
-            bookData->setBookID(row["book_id"].as<int>());
-            bookData->setBookTitle(row["title"].c_str());
-            bookData->setBookAuthor(row["author"].c_str());
-            bookData->setBookGenre(row["genre"].c_str());
-            bookData->setBookPublisher(row["publisher"].c_str());
-            bookData->setBookPublicationDate(row["publication_date"].c_str());
-            bookData->setAvailableCopies(row["available_copies"].as<int>());
-            bookManager.displayBookData(bookData);
+            savedBookSearch[rowIterationCounter].setBookID(row["book_id"].as<int>());
+            savedBookSearch[rowIterationCounter].setBookTitle(row["title"].c_str());
+            savedBookSearch[rowIterationCounter].setBookAuthor(row["author"].c_str());
+            savedBookSearch[rowIterationCounter].setBookGenre(row["genre"].c_str());
+            savedBookSearch[rowIterationCounter].setBookPublisher(row["publisher"].c_str());
+            savedBookSearch[rowIterationCounter].setBookPublicationDate(row["publication_date"].c_str());
+            savedBookSearch[rowIterationCounter].setAvailableCopies(row["available_copies"].as<int>());
+            bookManager.displayBookDataListFormat(&savedBookSearch[rowIterationCounter]);
             cout << endl;
+            rowIterationCounter++;
         }
         processTitleSearch.commit();
     }

@@ -16,6 +16,7 @@ BookInfo::BookInfo(int newBookID, std::string newBookTitle, std::string newBookA
     bookID = newBookID;
     title = newBookTitle;
     author = newBookAuthor;
+    genre = newBookGenre;
     publisher = newBookPublisher;
     publicationDate = newBookPublicationDate;
     availableCopies = newCopyCount;
