@@ -1,5 +1,6 @@
 #include <iostream>
 #include <pqxx/pqxx>
+#include <windows.h> // used for the Sleep() function
 #include "Staff.h"
 #include "extern.h"
 
@@ -18,12 +19,12 @@ void Staff::staffSignOut() {
 }
 
 void Staff::promoteMemberToStaffProcess() {
-	string memberEmaill, memberFirstName, memberLastName;
+	string memberEmail, memberFirstName, memberLastName;
 	bool memberExists = false;
 	bool promotionConfirmed = false;
 	
 	while (!promotionConfirmed) {
-		string memberEmail = identifyMemberToPromote();
+		memberEmail = identifyMemberToPromote();
 
 		if (memberEmail == "c") { // if the user wants to cancel the operation
 			system("cls");
@@ -37,8 +38,7 @@ void Staff::promoteMemberToStaffProcess() {
 	}
 
 	if (promotionConfirmed)
-		//promoteMemberToStaff(userEmail);
-		;
+		promoteMemberToStaff(memberEmail);
 }
 
 string Staff::identifyMemberToPromote() {
@@ -88,8 +88,9 @@ bool Staff::confirmPromotion(string memberFirstName, string memberLastName, bool
 
 	system("cls");
 	while (!inputIsInvalid) {
-		cout << "Are you sure you would like to promote " << memberFirstName << " " << memberLastName << " to library staff member?\n";
+		cout << "Are you sure you would like to promote " << memberFirstName << " " << memberLastName << " to a library staff member?\n";
 		cout << "Enter 'y' or 'n': "; cin >> decision;
+		cout << endl;
 		cin.clear(); cin.ignore(1);
 
 		if (decision == 'y')
@@ -104,4 +105,27 @@ bool Staff::confirmPromotion(string memberFirstName, string memberLastName, bool
 			cout << "Invalid input! Please try again!\n\n";
 		}
 	}
+}
+
+void Staff::promoteMemberToStaff(string memberEmail) {
+	try {
+		conn->prepare(
+			"promote_member",
+			"UPDATE users SET is_admin = TRUE WHERE email = $1"
+		);
+	}
+	catch (const pqxx::sql_error& e) {
+		// error handling is neccessary because prepared statement might still exist within current session
+		if (string(e.what()).find("Failure during \'[PREPARE promote_member]\': ERROR:  prepared statement \"promote_member\" already exists"))
+			throw;
+	}
+
+	pqxx::work promoteMemberProcess(*conn);
+	promoteMemberProcess.exec_prepared("promote_member", memberEmail);
+	promoteMemberProcess.commit();
+
+	cout << "Promotion was successful!\n";
+	cout << "Redirecting you back to the main menu...";
+	Sleep(3000);
+	system("cls");
 }
