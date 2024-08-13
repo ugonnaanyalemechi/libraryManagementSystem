@@ -16,3 +16,12 @@ void Staff::staffSignOut() {
 	admin = nullptr;
 	menuManager3.showWelcomeMenu();
 }
+
+void Staff::promoteMemberToStaffProcess() {
+	//string userEmail = identifyMemberToPromote();
+	bool memberExists;
+	cout << memberExists << endl;
+	// put prepared statement here
+
+	//promoteMemberToStaff(userEmail);
+}
