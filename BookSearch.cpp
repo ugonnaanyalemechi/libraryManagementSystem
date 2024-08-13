@@ -74,8 +74,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
         bookDisplayData->setBookID(bookID);
         cout << "--------------- Search Result:  ---------------\n";
         if (bookManager.retrieveBookByID(bookDisplayData)) {
-            bookManager.displayBookListHeader();
-            bookManager.displayBookDataListFormat(bookDisplayData);
+            bookManager.displayBookListFullInfo(bookDisplayData);
             cout << endl << endl;
         }
         break;
@@ -121,8 +120,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
     if (validSearchSelected) {
         bool isBookIdValid = false;
         string optionInput;
-
-        if (!isBookIdValid) {
+        while (!isBookIdValid) {
             cout << "\nEnter a Book ID# to view more details and options (enter 'C' to cancel): ";
             if (menuInput == 200)
                 cin.ignore();
@@ -132,16 +130,18 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
                 isBookIdValid = true;
             }
             else if (isStringAnInt(optionInput) && optionInput.length() != 0) {
-                isBookIdValid = true;
                 int bookIndex = stoi(optionInput);
                 bookDisplayData->setBookID(bookIndex);
-                bookManager.retrieveBookByID(bookDisplayData);
-                system("cls");
-                bookManager.displayBookListFullInfo(bookDisplayData);
-                cout << endl;
+                isBookIdValid = bookManager.retrieveBookByID(bookDisplayData);
+
+                if (isBookIdValid) {
+                    system("cls");
+                    bookManager.displayBookListFullInfo(bookDisplayData);
+                    cout << endl;
+                }
 
                 char searchReturnInput = '0';
-                while (true) {
+                while (isBookIdValid) {
                     cout << "Return to search? (Y/N): ";
                     cin >> searchReturnInput;
                     searchReturnInput = toupper(searchReturnInput);
