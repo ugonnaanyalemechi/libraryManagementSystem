@@ -4,17 +4,19 @@ BookInfo::BookInfo() {
     bookID = 0;
     title = "N/A";
     author = "N/A";
-    std::string publisher = "N/A";
-    std::string publicationDate = "N/A";
-    int availableCopies = 0;
+    genre = "N/A";
+    publisher = "N/A";
+    publicationDate = "N/A";
+    availableCopies = 0;
 }
 
-BookInfo::BookInfo(int newBookID, std::string newBookTitle, std::string newBookAuthor, 
+BookInfo::BookInfo(int newBookID, std::string newBookTitle, std::string newBookAuthor, std::string newBookGenre, 
                    std::string newBookPublisher, std::string newBookPublicationDate, int newCopyCount)
 {
     bookID = newBookID;
     title = newBookTitle;
     author = newBookAuthor;
+    genre = newBookGenre;
     publisher = newBookPublisher;
     publicationDate = newBookPublicationDate;
     availableCopies = newCopyCount;
@@ -38,6 +40,11 @@ void BookInfo::setBookTitle(std::string newBookTitle)
 void BookInfo::setBookAuthor(std::string newBookAuthor)
 {
     author = newBookAuthor;
+}
+
+void BookInfo::setBookGenre(std::string newBookGenre)
+{
+    genre = newBookGenre;
 }
 
 void BookInfo::setBookPublisher(std::string newBookPublisher)
@@ -68,6 +75,11 @@ std::string BookInfo::retrieveBookTitle()
 std::string BookInfo::retrieveBookAuthor()
 {
     return author;
+}
+
+std::string BookInfo::retrieveBookGenre()
+{
+    return genre;
 }
 
 std::string BookInfo::retrieveBookPublisher()

@@ -4,7 +4,12 @@
 
 class BookManager{
 private:
-    void appendBookToDatabase(std::string, std::string, std::string, std::string, int);
+    //Values to adjust # of characters in elements for in-terminal book info display:
+    int maxIdDisplayLength = 6;
+    int maxTitleDisplayLength = 40;
+    int maxAuthorDisplayLength = 15;
+
+    void appendBookToDatabase(std::string, std::string, std::string, std::string, std::string, int);
     void displayAddBookUI();
     void displayEditBookUI();
     void processBookChanges(std::string,int ,std::string);
@@ -20,8 +25,12 @@ private:
     bool isBookIDValid; 
     void retrieveBookByID(int, BookInfo*&);
 public:
+    bool checkDate(std::string);
     void addBookProcess();
     void editBookProcess();
-    bool retrieveBookByID(BookInfo* bookData);
-    void displayBookData(BookInfo*);
+    bool retrieveBookByID(BookInfo*&);
+    void displayBookListFullInfo(BookInfo*);
+    void displayBookDataListFormat(BookInfo*);
+    void displayBookListHeader();
+    
 };
