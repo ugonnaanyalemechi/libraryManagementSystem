@@ -18,10 +18,29 @@ void Staff::staffSignOut() {
 }
 
 void Staff::promoteMemberToStaffProcess() {
-	//string userEmail = identifyMemberToPromote();
-	bool memberExists;
-	cout << memberExists << endl;
-	// put prepared statement here
+	string userEmail;
+	bool memberExists = false;
+	
+	while (!memberExists) {
+		string userEmail = identifyMemberToPromote();
 
-	//promoteMemberToStaff(userEmail);
+		if (userEmail == "c") // if the user wants to cancel the operation
+			break;
+		else
+			//memberExists = checkMemberExists();
+			;
+	}
+
+	if (memberExists)
+		//promoteMemberToStaff(userEmail);
+		;
+}
+
+string Staff::identifyMemberToPromote() {
+	string userEmail;
+
+	cout << "Enter the email address of the user to be promoted: "; getline(cin, userEmail);
+	cout << endl;
+
+	return userEmail;
 }
