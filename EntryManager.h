@@ -18,8 +18,8 @@ private:
 	void setupSQLPrepStatementForFindingUser();
 	void handleInvalidCredentials();
 	void authorizeUser(string, string);
-	bool checkUserIsLibraryAdmin(string);
 public:
+	bool checkUserIsLibraryAdmin(string);
 	void registerLibraryMember();
 	void signInUser();
 };
