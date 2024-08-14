@@ -304,9 +304,13 @@ void EntryManager::adminEditUserProcess() {
 		}
 		else if (userCharInput == 'Y') {
 			system("cls");
+			bool singleRun = false;
 			do {
 				cout << "Enter a member email: ";
-				cin.ignore();
+				if (!singleRun) {
+					cin.ignore();
+					singleRun = true;
+				}
 				getline(cin, userInput);
 				system("cls");
 			} while (!retrieveUserAccountInfo(userInput));
