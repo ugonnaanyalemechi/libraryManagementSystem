@@ -77,7 +77,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 3:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		entryManager.selfEditUserProcess(user->getEmail());
 		break;
 	case 4:
 		user->signOut();
@@ -124,10 +124,10 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		bookManager->editBookProcess();
 		break;
 	case 4:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		entryManager.adminEditUserProcess();
 		break;
 	case 5:
-		cout << "Feature unavailable. Please try again later.\n\n";
+		entryManager.selfEditUserProcess(admin->getEmail());
 		break;
 	case 6:
 		admin->promoteMemberToStaffProcess();

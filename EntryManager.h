@@ -19,7 +19,15 @@ private:
 	void handleInvalidCredentials();
 	void authorizeUser(string, string);
 	bool checkUserIsLibraryAdmin(string);
+	void displayUserAccountEdit();
+	void processAccountChanges(int userInput, string email);
+	void allocatePreparedAccountEditStatement();
+	void applyAccountChanges(string userChange, string changeType);
+	bool retrieveUserAccountInfo(string email);
+	void displayUserAccountInfo();
 public:
 	void registerLibraryMember();
 	void signInUser();
+	void adminEditUserProcess();
+	void selfEditUserProcess(string email);
 };
