@@ -335,6 +335,7 @@ void EntryManager::selfEditUserProcess(string email) {
 		retrieveUserAccountInfo(email);
 		admin->setFirstName(user->getFirstName());
 		delete user;
+		user = nullptr;
 	}
 	else {
 		retrieveUserAccountInfo(email);
