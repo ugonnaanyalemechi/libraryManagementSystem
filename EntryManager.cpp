@@ -437,6 +437,7 @@ void EntryManager::processAccountChanges(int userInput, string email) {
 		system("cls");
 		break;
 	default:
+		system("cls");
 		cout << "Invalid option selected...\n\n";
 		displayUserAccountEdit();
 		break;
