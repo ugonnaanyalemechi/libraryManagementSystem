@@ -47,6 +47,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 		case 4:
 			cout << "Exiting..." << endl;
 			quit = true;
+			exit(EXIT_SUCCESS);
 			break;
 		default:
 			cout << "Invalid option selected...\n\n";
@@ -83,7 +84,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		break;
 	case 5:
 		cout << "Exiting...";
-		quit = true;
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		cout << "Invalid option selected...\n\n";
@@ -102,8 +103,9 @@ void MenuManager::showAdminMainMenu() {
 	cout << setw(5) << "" << "3 - Edit Books\n";
 	cout << setw(5) << "" << "4 - Search and Manage Library Members\n";
 	cout << setw(5) << "" << "5 - Edit My Account Info\n";
-	cout << setw(5) << "" << "6 - Sign Out\n";
-	cout << setw(5) << "" << "7 - Exit\n\n";
+	cout << setw(5) << "" << "6 - Promote Library Member to Library Staff\n";
+	cout << setw(5) << "" << "7 - Sign Out\n";
+	cout << setw(5) << "" << "8 - Exit\n\n";
 	processAdminMainMenu(getUserInput());
 }
 
@@ -128,11 +130,14 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 6:
-		admin->staffSignOut();
+		admin->promoteMemberToStaffProcess();
 		break;
 	case 7:
+		admin->staffSignOut();
+		break;
+	case 8:
 		cout << "Exiting...";
-		quit = true;
+		exit(EXIT_SUCCESS);
 		break;
 	default:
 		cout << "Invalid option selected...\n\n";
