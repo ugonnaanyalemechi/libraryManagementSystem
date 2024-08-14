@@ -4,7 +4,7 @@ project (libraryManagementSystem)
 set(SOURCE_FILES
 	main.cpp
 	MenuManager.cpp
-	EntryManager.cpp
+	AccountManager.cpp
 	User.cpp
 	Staff.cpp
 	BookManager.cpp

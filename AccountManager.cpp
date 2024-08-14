@@ -3,14 +3,14 @@
 #include <windows.h> // used for the Sleep() function
 #include <conio.h> // used for the _getch() function
 #include <algorithm>
-#include "EntryManager.h"
+#include "AccountManager.h"
 #include "sha256.h"
 #include "extern.h"
 
 using namespace std;
 MenuManager menuManager1;
 
-void EntryManager::registerLibraryMember() {
+void AccountManager::registerLibraryMember() {
 	string firstName, lastName, email, passHash;
 	bool libraryMemberAddedToDB = false;
 
@@ -33,7 +33,7 @@ void EntryManager::registerLibraryMember() {
 		
 }
 
-string EntryManager::obtainPII(string infoType) { // PII = personally identifiable information
+string AccountManager::obtainPII(string infoType) { // PII = personally identifiable information
 	string userInput;
 	bool newUserPIIValid = false;
 
@@ -48,7 +48,7 @@ string EntryManager::obtainPII(string infoType) { // PII = personally identifiab
 	}
 }
 
-bool EntryManager::checkPII(string &userInput, string infoType) {
+bool AccountManager::checkPII(string &userInput, string infoType) {
 
 	int alphaCount = 0;
 
@@ -77,7 +77,7 @@ bool EntryManager::checkPII(string &userInput, string infoType) {
 	}
 }
 
-string EntryManager::hideCharacterInput() {
+string AccountManager::hideCharacterInput() {
 	char cString[1000];
 	int i = 0;
 	char ch;
@@ -99,7 +99,7 @@ string EntryManager::hideCharacterInput() {
 	return enteredString;
 }
 
-string EntryManager::createPassword() {
+string AccountManager::createPassword() {
 	string inputtedPassword;
 
 	cout << "Enter password: ";
@@ -108,7 +108,7 @@ string EntryManager::createPassword() {
 	return sha256(inputtedPassword);
 }
 
-void EntryManager::confirmNewPassword(string inputtedPassword) {
+void AccountManager::confirmNewPassword(string inputtedPassword) {
 	string reenteredPassword;
 	cout << "Confirm password: ";
 	reenteredPassword = hideCharacterInput();
@@ -120,7 +120,7 @@ void EntryManager::confirmNewPassword(string inputtedPassword) {
 	}
 }
 
-bool EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
+bool AccountManager::addNewLibraryMemberToDB(string firstName, string lastName, string email, string passHash) {
 	try {
 		conn->prepare(
 			"addNewUser",
@@ -150,14 +150,14 @@ bool EntryManager::addNewLibraryMemberToDB(string firstName, string lastName, st
 	return true;
 }
 
-void EntryManager::completeLibraryMemberRegistration() {
+void AccountManager::completeLibraryMemberRegistration() {
 	cout << "You have been successfully registered!\n";
 	cout << "Redirecting you back to the start...\n\n";
 	Sleep(1000);
 	system("cls");
 }
 
-void EntryManager::signInUser() {
+void AccountManager::signInUser() {
 	string email, password, firstName;
 
 	cout << "--------------------- Sign In ---------------------\n\n";
@@ -169,7 +169,7 @@ void EntryManager::signInUser() {
 		authorizeUser(email, firstName);
 }
 
-string EntryManager::obtainCredentials(string credentialType) {
+string AccountManager::obtainCredentials(string credentialType) {
 	string userInput;
 
 	if (credentialType == "Email") {
@@ -185,7 +185,7 @@ string EntryManager::obtainCredentials(string credentialType) {
 	return userInput;
 }
 
-bool EntryManager::authenticateUser(string email, string password, string& firstName) {
+bool AccountManager::authenticateUser(string email, string password, string& firstName) {
 	string passHash = sha256(password);
 	bool userExists = searchUserInDB(email, passHash, firstName);
 
@@ -194,7 +194,7 @@ bool EntryManager::authenticateUser(string email, string password, string& first
 	return userExists;
 }
 
-bool EntryManager::searchUserInDB(string email, string passHash, string& firstName) {
+bool AccountManager::searchUserInDB(string email, string passHash, string& firstName) {
 	setupSQLPrepStatementForFindingUser();
 	
 	pqxx::work findUserProcess(*conn);
@@ -209,7 +209,7 @@ bool EntryManager::searchUserInDB(string email, string passHash, string& firstNa
 	return true;
 }
 
-void EntryManager::setupSQLPrepStatementForFindingUser() {
+void AccountManager::setupSQLPrepStatementForFindingUser() {
 	try {
 		conn->prepare(
 			"find_user",
@@ -223,7 +223,7 @@ void EntryManager::setupSQLPrepStatementForFindingUser() {
 	}
 }
 
-void EntryManager::handleInvalidCredentials() {
+void AccountManager::handleInvalidCredentials() {
 	cout << "---------------------------------------------------\n\n";
 	cout << "Invalid email and/or password!\n\n";
 	cout << "Would you like to try again or return back to the starting menu?\n\n";
@@ -246,7 +246,7 @@ void EntryManager::handleInvalidCredentials() {
 	}
 }
 
-void EntryManager::authorizeUser(string email, string firstName) {
+void AccountManager::authorizeUser(string email, string firstName) {
 	bool userIsLibraryAdmin = checkUserIsLibraryAdmin(email);
 
 	if (userIsLibraryAdmin) {
@@ -261,7 +261,7 @@ void EntryManager::authorizeUser(string email, string firstName) {
 	}
 }
 
-bool EntryManager::checkUserIsLibraryAdmin(string email) {
+bool AccountManager::checkUserIsLibraryAdmin(string email) {
 	try {
 		conn->prepare(
 			"check_user_is_admin",
@@ -283,7 +283,7 @@ bool EntryManager::checkUserIsLibraryAdmin(string email) {
 	return true;
 }
 
-void EntryManager::adminEditUserProcess() {
+void AccountManager::adminEditUserProcess() {
 	string userInput;
 	user = new User();
 	do {
@@ -326,7 +326,7 @@ void EntryManager::adminEditUserProcess() {
 	user = nullptr;
 }
 
-void EntryManager::selfEditUserProcess(string email) {
+void AccountManager::selfEditUserProcess(string email) {
 	bool userNullAtStart = false;
 	if (user == nullptr) {
 		userNullAtStart = true;
@@ -346,13 +346,13 @@ void EntryManager::selfEditUserProcess(string email) {
 	}
 }
 
-void EntryManager::displayUserAccountInfo() {
+void AccountManager::displayUserAccountInfo() {
 	cout << "First Name: " << user->getFirstName() << endl;
 	cout << "Last Name: " << user->getlastName() << endl;
 	cout << "Email: " << user->getEmail() << endl;
 }
 
-bool EntryManager::retrieveUserAccountInfo(string email) {
+bool AccountManager::retrieveUserAccountInfo(string email) {
 	try {
 		conn->prepare("retrieveUserInfo", "SELECT first_name, last_name, email FROM users WHERE email = $1");
 	}
@@ -389,7 +389,7 @@ bool EntryManager::retrieveUserAccountInfo(string email) {
 	return true;
 }
 
-void EntryManager::displayUserAccountEdit() {
+void AccountManager::displayUserAccountEdit() {
 	cout << "Current member information:\n";
 	displayUserAccountInfo();
 	cout << "\n\nSelect info to change:\n";
@@ -398,7 +398,7 @@ void EntryManager::displayUserAccountEdit() {
 	processAccountChanges(selectedAction, user->getEmail());
 }
 
-void EntryManager::processAccountChanges(int userInput, string email) {
+void AccountManager::processAccountChanges(int userInput, string email) {
 	allocatePreparedAccountEditStatement();
 	system("cls");
 	cout << "Current member information:\n";
@@ -467,7 +467,7 @@ void EntryManager::processAccountChanges(int userInput, string email) {
 	}
 }
 
-void EntryManager::allocatePreparedAccountEditStatement() {
+void AccountManager::allocatePreparedAccountEditStatement() {
 	const int totalOptions = 4;
 	string editOptions[totalOptions] = {"first_name", "last_name", "email", "pass_hash"};
 
@@ -483,7 +483,7 @@ void EntryManager::allocatePreparedAccountEditStatement() {
 	}
 }
 
-void EntryManager::applyAccountChanges(string userChange, string changeType) {
+void AccountManager::applyAccountChanges(string userChange, string changeType) {
 	try {
 		pqxx::work applyChange(*conn);
 		applyChange.exec_prepared("edit_user_" + changeType, userChange, user->getEmail());
