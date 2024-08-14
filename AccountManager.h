@@ -2,7 +2,7 @@
 
 using std::string;
 
-class EntryManager
+class AccountManager
 {
 private:
 	string obtainPII(string);

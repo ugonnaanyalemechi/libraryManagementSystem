@@ -3,7 +3,7 @@
 #include <string>
 #include <pqxx/pqxx>
 #include "MenuManager.h"
-#include "EntryManager.h"
+#include "AccountManager.h"
 #include "User.h"
 #include "Staff.h"
 #include "BookSearch.h"

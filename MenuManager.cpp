@@ -5,7 +5,7 @@
 
 using namespace std;
 BookSearch bookSearch;
-EntryManager entryManager;
+AccountManager accountManager;
 
 int MenuManager::getUserInput() {
 	int input;
@@ -39,10 +39,10 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 			bookSearch.searchBookProcess();
 			break;
 		case 2:
-			entryManager.signInUser();
+			accountManager.signInUser();
 			break;
 		case 3:
-			entryManager.registerLibraryMember();
+			accountManager.registerLibraryMember();
 			break;
 		case 4:
 			cout << "Exiting..." << endl;
@@ -77,7 +77,7 @@ void MenuManager::processMemberMainMenu(int userInput) {
 		cout << "Feature unavailable. Please try again later.\n\n";
 		break;
 	case 3:
-		entryManager.selfEditUserProcess(user->getEmail());
+		accountManager.selfEditUserProcess(user->getEmail());
 		break;
 	case 4:
 		user->signOut();
@@ -124,10 +124,10 @@ void MenuManager::processAdminMainMenu(int userInput) {
 		bookManager->editBookProcess();
 		break;
 	case 4:
-		entryManager.adminEditUserProcess();
+		accountManager.adminEditUserProcess();
 		break;
 	case 5:
-		entryManager.selfEditUserProcess(admin->getEmail());
+		accountManager.selfEditUserProcess(admin->getEmail());
 		break;
 	case 6:
 		admin->promoteMemberToStaffProcess();
