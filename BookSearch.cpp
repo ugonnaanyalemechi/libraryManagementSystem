@@ -30,9 +30,13 @@ void BookSearch::searchBookProcess() {
 }
 
 void BookSearch::displaySearchBookUI(BookInfo*& savedBookSearchResults) {
-    cout << "--------------- Search Books:  ---------------" << endl;
+    cout << "--------------------- Search Books ---------------------\n\n";
     cout << "Search by:\n";
-    cout << "#1. Book ID#\n#2. Title\n#3. Author\n#4. Genre\n#5. Cancel Operation\n\n";
+    cout << setw(5) << "" << "1 - Book ID#\n";
+    cout << setw(5) << "" << "2 - Title\n"; 
+    cout << setw(5) << "" << "3 - Author\n"; 
+    cout << setw(5) << "" << "4 - Genre\n";
+    cout << setw(5) << "" << "5 - Cancel Operation\n\n";
     cout << "Please enter the numerical digit of the option you would like to select...\n";
     cout << "Enter here: ";
     int menuIntInput;
@@ -72,7 +76,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         bookDisplayData->setBookID(bookID);
-        cout << "--------------- Search Result:  ---------------\n";
+        cout << "\n--------------------- Search Result ---------------------\n";
         if (bookManager.retrieveBookByID(bookDisplayData)) {
             bookManager.displayBookListFullInfo(bookDisplayData);
             cout << endl << endl;
@@ -83,7 +87,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
         cout << "Enter a Title: ";
         cin.ignore();
         getline(cin, userInput);
-        cout << "--------------- Search Results:  ---------------\n";
+        cout << "\n------------------------------------- Search Results -------------------------------------\n";
         bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "title", savedBookSearchResults);
         break;
@@ -92,7 +96,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
         cout << "Enter an Author: ";
         cin.ignore();
         getline(cin, userInput);
-        cout << "--------------- Search Results:  ---------------\n";
+        cout << "\n------------------------------------- Search Results -------------------------------------\n";
         bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "author", savedBookSearchResults);
         break;
@@ -101,7 +105,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
         cout << "Enter a Genre: ";
         cin.ignore();
         getline(cin, userInput);
-        cout << "--------------- Search Results:  ---------------\n";
+        cout << "\n------------------------------------- Search Results -------------------------------------\n";
         bookManager.displayBookListHeader();
         processRichBookTextSearch(userInput, 0, "genre", savedBookSearchResults);
         break;
@@ -122,7 +126,7 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
         bool isBookIdValid = false;
         string optionInput;
         while (!isBookIdValid) {
-            cout << "\nEnter a Book ID# to view more details and options (enter 'C' to cancel): ";
+            cout << "\nEnter a book ID# to view more details and options (enter 'C' to cancel): ";
             if (menuInput == 200 && firstRun) {
                 cin.ignore();
                 firstRun = false;
@@ -176,7 +180,8 @@ void BookSearch::processSearchMenuInput(int menuInput, BookInfo*& savedBookSearc
 }
 
 void BookSearch::displayPreviousSearchResults(BookInfo* bookSearchResult) {
-    cout << "--------------- Search Results:  ---------------\n";
+    cout << "\n------------------------------------- Search Results -------------------------------------\n";
+    bookManager.displayBookListHeader();
     for (int i = 0; i < 25; i++) {
         if (bookSearchResult[i].retrieveBookID() != 0) {
             bookManager.displayBookDataListFormat(&bookSearchResult[i]);

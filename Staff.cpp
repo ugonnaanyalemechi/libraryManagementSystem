@@ -26,7 +26,7 @@ void Staff::promoteMemberToStaffProcess() {
 	while (!promotionConfirmed) {
 		memberEmail = identifyMemberToPromote();
 
-		if (memberEmail == "c") { // if the user wants to cancel the operation
+		if ((memberEmail == "C") || (memberEmail == "c")) { // if the user wants to cancel the operation
 			system("cls");
 			break;
 		}
@@ -43,8 +43,8 @@ void Staff::promoteMemberToStaffProcess() {
 
 string Staff::identifyMemberToPromote() {
 	string userEmail;
-
-	cout << "Enter the email address of the user to be promoted (or enter 'c' to quit and return to the main menu)\n";
+	cout << "--------------------- Promote To Library Staff ---------------------\n\n";
+	cout << "Enter the email address of the user to be promoted (or enter 'C' to quit and return to the main menu)\n";
 	cout << "Enter here: "; getline(cin, userEmail);
 	cout << endl;
 
@@ -88,14 +88,15 @@ bool Staff::confirmPromotion(string memberFirstName, string memberLastName, bool
 
 	system("cls");
 	while (!inputIsInvalid) {
+		cout << "--------------------- Promote To Library Staff ---------------------\n\n";
 		cout << "Are you sure you would like to promote " << memberFirstName << " " << memberLastName << " to a library staff member?\n";
-		cout << "Enter 'y' or 'n': "; cin >> decision;
+		cout << "Enter here (Y/N): "; cin >> decision;
 		cout << endl;
 		cin.clear(); cin.ignore(1);
 
-		if (decision == 'y')
+		if (tolower(decision) == 'y')
 			return true;
-		else if (decision == 'n') {
+		else if (tolower(decision) == 'n') {
 			system("cls");
 			memberExists = false;
 			return false;
