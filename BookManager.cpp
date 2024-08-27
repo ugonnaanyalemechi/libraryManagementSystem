@@ -52,8 +52,8 @@ void BookManager::displayAddBookUI() {
     string publicationDate;
     int availableCopies;
 
-    cout << "--------------- Add a new book:  ---------------" << endl;
-    cout << "Seperate multiple entries with a comma (,)\n\n";
+    cout << "--------------------- Add New Book ---------------------\n\n";
+    cout << "NOTE: Seperate multiple entries with a comma (,)\n\n";
     cout << "Enter Book Title: ";
     getline(cin, title);
     cout << "Enter Book Author(s): ";
@@ -64,7 +64,7 @@ void BookManager::displayAddBookUI() {
     getline(cin, publisher);
     cout << "Enter the Publication Date (YYYY-MM-DD): ";
     getline(cin, publicationDate);
-    cout << "Enter available copies: ";
+    cout << "Enter Available Copies: ";
     cin >> availableCopies;
 
     while (availableCopies < 1) {
@@ -179,6 +179,7 @@ void BookManager::displayEditBookUI() {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
+    cout << "\nFinding book";
     allocatePreparedEditStatement();
     retrieveBookByID(bookID, bookDisplayData);
 
@@ -298,13 +299,20 @@ void BookManager::displayBookDataListFormat(BookInfo* bookData) {
 
 void BookManager::editBookMenuUI(BookInfo*& storedBookData) {
     isBookIDValid = false;
-    cout << "Book Found: \n\n";
-    //displayBookListHeader();
+    cout << "...book was found!\n\n";
     displayBookListFullInfo(storedBookData);
 
     cout << endl << endl;
     cout << "What would you like to modify?\n";
-    cout << "#1. Title\n#2. Author(s)\n#3. Genre(s)\n#4. Publisher(s)\n#5. Publication Date\n#6. Available Copies\n#7. Delete Book\n#8. Cancel Operation\n\n";
+    cout << "\n\nSelect info to change:\n";
+    cout << setw(5) << "" << "1 - Title\n";
+    cout << setw(5) << "" << "2 - Author\n";
+    cout << setw(5) << "" << "3 - Genre\n";
+    cout << setw(5) << "" << "4 - Publisher\n";
+    cout << setw(5) << "" << "5 - Publication Date\n";
+    cout << setw(5) << "" << "6 - Available Copies\n";
+    cout << setw(5) << "" << "7 - Delete Book\n";
+    cout << setw(5) << "" << "8 - Cancel Operation\n\n";
     cout << "Please enter the numerical digit of the option you would like to select...\n";
     cout << "Enter here: ";
     int selectedOption;

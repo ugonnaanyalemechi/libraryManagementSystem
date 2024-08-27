@@ -347,9 +347,9 @@ void AccountManager::selfEditUserProcess(string email) {
 }
 
 void AccountManager::displayUserAccountInfo() {
-	cout << "First Name: " << user->getFirstName() << endl;
-	cout << "Last Name: " << user->getlastName() << endl;
-	cout << "Email: " << user->getEmail() << endl;
+	cout << setw(5) << "" << "First Name:   " << user->getFirstName() << endl;
+	cout << setw(5) << "" << "Last Name:    " << user->getlastName() << endl;
+	cout << setw(5) << "" << "Email:        " << user->getEmail() << endl;
 }
 
 bool AccountManager::retrieveUserAccountInfo(string email) {
@@ -390,10 +390,15 @@ bool AccountManager::retrieveUserAccountInfo(string email) {
 }
 
 void AccountManager::displayUserAccountEdit() {
-	cout << "Current member information:\n";
+	cout << "--------------------- Account Editor ---------------------\n\n";
+	cout << "Current member information:\n\n";
 	displayUserAccountInfo();
 	cout << "\n\nSelect info to change:\n";
-	cout << "#1. First Name\n#2. Last Name\n#3. Email\n#4. Password\n#5. Cancel Operation\n\n";
+	cout << setw(5) << "" << "1 - First Name\n";
+	cout << setw(5) << "" << "2 - Last Name\n";
+	cout << setw(5) << "" << "3 - Email\n";
+	cout << setw(5) << "" << "4 - Password\n";
+	cout << setw(5) << "" << "5 - Cancel Operation\n\n";
 	int selectedAction = menuManager1.getUserInput();
 	processAccountChanges(selectedAction, user->getEmail());
 }
@@ -401,7 +406,7 @@ void AccountManager::displayUserAccountEdit() {
 void AccountManager::processAccountChanges(int userInput, string email) {
 	allocatePreparedAccountEditStatement();
 	system("cls");
-	cout << "Current member information:\n";
+	cout << "Current member information:\n\n";
 	displayUserAccountInfo();
 	cout << endl << endl;
 
@@ -428,7 +433,7 @@ void AccountManager::processAccountChanges(int userInput, string email) {
 		changeType = "email";
 		break;
 	case 4:
-		cout << "--------------------- Create a new password ---------------------\n\n";
+		cout << "--------------------- Create a New Password ---------------------\n\n";
 		userStringInput = createPassword();
 		confirmChangePrompt = true;
 		changeType = "pass_hash";
@@ -455,7 +460,7 @@ void AccountManager::processAccountChanges(int userInput, string email) {
 			else if (userCharInput == 'Y') {
 				applyAccountChanges(userStringInput, changeType);
 				system("cls");
-				cout << "Change applied successfully!\n";
+				cout << "Change applied successfully!\n\n";
 				break;
 			}
 			else {

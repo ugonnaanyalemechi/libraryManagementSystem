@@ -23,7 +23,7 @@ void MenuManager::beginMenuProcess() {
 }
 
 void MenuManager::showWelcomeMenu() {
-	cout << "--------------------------------------------------------------------------\n";
+	cout << "--------------------------------------------------------------------------\n\n";
 	cout << "Welcome to the Library Management System!\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - Sign In\n";
@@ -57,7 +57,7 @@ void MenuManager::processWelcomeMenuInput(int userInput) {
 
 void MenuManager::showMemberMainMenu() {
 	cout << "--------------------- Main Menu ---------------------\n\n";
-	cout << "Welcome, " << user->getFirstName() << "\n\n";
+	cout << "Hello, " << user->getFirstName() << "\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - View My Loans\n";
 	cout << setw(5) << "" << "3 - Edit My Account Info\n";
@@ -96,8 +96,8 @@ void MenuManager::processMemberMainMenu(int userInput) {
 }
 
 void MenuManager::showAdminMainMenu() {
-	cout << "Welcome, " << admin->getFirstName() << "\n\n";
 	cout << "--------------------- Main Menu - Library Staff ---------------------\n\n";
+	cout << "Hello, " << admin->getFirstName() << "\n\n";
 	cout << setw(5) << "" << "1 - Search Books\n";
 	cout << setw(5) << "" << "2 - Add Books\n";
 	cout << setw(5) << "" << "3 - Edit Books\n";
